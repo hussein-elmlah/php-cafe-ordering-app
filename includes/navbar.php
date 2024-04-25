@@ -44,7 +44,7 @@
                         <a class="nav-link" href="/admin/orders">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/users">Users</a>
+                        <a class="nav-link" href="http://localhost/cafe/views/admin/admin_users_view.php">Users</a>
                     </li>
                 <?php endif; ?>
             </ul>
