@@ -4,8 +4,7 @@ require_once "utilities/redirectToView.php";
 
 $requestView = $_GET['view'] ?? '';
 
-// Temporary placeholder values for user role, first name and isLoggedIn
-$isLoggedIn = true;
+// Temporary placeholder values
 $loggedUser = array(
     'isAdmin' => true,
     'first_name' => 'Hussein'
@@ -13,17 +12,17 @@ $loggedUser = array(
 
 switch ($requestView) {
     case 'null':
-        // Include admin-home controller
+        // Include admin-home controller here
         redirectToView('admin-users'); // delete later
         break;
     case '':
-        // Include admin-home controller
+        // Include admin-home controller here
         break;
     case '/':
-        // Include admin-home controller
+        // Include admin-home controller here
         break;
     case '#':
-        // Include admin-home controller
+        // Include admin-home controller here
         redirectToView('admin-users'); // delete later
         break;
     case 'admin-users':

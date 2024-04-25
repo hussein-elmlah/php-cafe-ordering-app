@@ -1,7 +1,6 @@
 <?php
 
 function Pagination($currentPage, $totalPages) {
-    // echo "<script>alert('currentPage: |$currentPage| , totalPages: |$totalPages| ');</script>";
 
     if ($totalPages < 1) {
         return;
@@ -31,7 +30,6 @@ function Pagination($currentPage, $totalPages) {
         echo '<button class="join-item btn border mx-1 bg-dark text-white" onclick="onPageChange(' . $i . ')">' . $i . '</button>';
     }
     echo '</div>';
-    // var_dump($currentPage);
 }
 
 ?>
