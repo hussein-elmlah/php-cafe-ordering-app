@@ -3,6 +3,8 @@
 function handle_query_params($query, $params, $search_fields) {
     $max_limit = 50;
 
+    // var_dump($params);
+
     $page = isset($params['page']) ? intval($params['page']) : 1;
     $limit = isset($params['limit']) ? intval($params['limit']) : 10;
     $order_by = isset($params['order']) ? $params['order'] : null;

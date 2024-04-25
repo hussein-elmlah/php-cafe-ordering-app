@@ -1,7 +1,8 @@
 <?php
 
-// require_once 'config/db_info.php';
-// require_once 'models/user.php';
+require_once 'config/db_info.php';
+require_once 'models/User.php';
+require_once 'helpers/query_helper.php';
 class AdminUser {
     public $id;
     public $name;
@@ -17,30 +18,32 @@ class AdminUser {
 class AdminUserController {
     public function displayAdminUsers() {
 
-        // $db = Database::getInstance();
-        // $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        $db = Database::getInstance();
+        $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-        // $base_query = "SELECT * FROM products";
+        $base_query = "SELECT * FROM users";
 
-        // $params = [
-        //     'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-        //     'limit' => isset($_GET['limit']) ? $_GET['limit'] : 10,
-        //     'order' => isset($_GET['order']) ? $_GET['order'] : null,
-        //     'search' => isset($_GET['search']) ? $_GET['search'] : null,
-        // ];
+        $params = [
+            'page' =>  1,
+            'limit' =>  3,
+            'order' =>  'email',
+            'search' => 'Adm',
+        ];
 
-        // $search_fields = ['name', 'description'];
+        // var_dump( $params);
 
-        // $modified_query = handle_query_params($base_query, $params, $search_fields);
+        $search_fields = ['name', 'name'];
+
+        $modified_query = handle_query_params($base_query, $params, $search_fields);
     
-        // $adminUsers = $db->customQuery($modified_query);
+        $adminUsers = $db->customQuery($modified_query);
 
         // Simulate fetching admin users from a database
-        $adminUsers = [
-            new AdminUser(1, 'Admin 1', 'admin1@example.com'),
-            new AdminUser(2, 'Admin 2', 'admin2@example.com'),
-            new AdminUser(3, 'Admin 3', 'admin3@example.com')
-        ];
+        // $adminUsers = [
+        //     new AdminUser(1, 'Admin 1', 'admin1@example.com'),
+        //     new AdminUser(2, 'Admin 2', 'admin2@example.com'),
+        //     new AdminUser(3, 'Admin 3', 'admin3@example.com')
+        // ];
 
         // echo "<script>alert('adminUsers: |$adminUsers|');</script>";
 
