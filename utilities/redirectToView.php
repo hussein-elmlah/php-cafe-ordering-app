@@ -1,7 +1,7 @@
 <?php
-function redirectToPage($page) {
+function redirectToView($view) {
     $baseHref = "http://localhost/osad44/php/PHP-Cafe-App/php-cafe-ordering-app";
-    $url = $baseHref . "?page=" . $page;
+    $url = $baseHref . "?view=" . $view;
     echo "<script>window.location.href = '$url';</script>";
 }
 ?>

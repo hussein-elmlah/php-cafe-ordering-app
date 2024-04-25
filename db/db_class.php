@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config/db_info.php';
+require_once './config/db_info.php';
 
 class Database {
 
@@ -23,12 +23,33 @@ class Database {
     public function connect($host, $username, $password, $database) 
     {
         try {
+            // Connect to MySQL server
+            $dsn = "mysql:host=$host";
+            $pdo = new PDO($dsn, $username, $password);
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+            // Check if the database exists
+            $query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :database";
+            $statement = $pdo->prepare($query);
+            $statement->bindParam(':database', $database);
+            $statement->execute();
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+    
+            // If the database doesn't exist, create it
+            if (!$result) {
+                $pdo->exec("CREATE DATABASE $database");
+                echo "Database created successfully.\n";
+            }
+    
+            // Connect to the specified database
             $dsn = "mysql:host=$host;dbname=$database";
             $this->connection = new PDO($dsn, $username, $password);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die('Database connection failed: ' . $e->getMessage());
         }
     }
+    
 
     public function customQuery($query) {
         try {

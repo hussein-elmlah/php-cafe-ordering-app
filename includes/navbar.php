@@ -1,6 +1,8 @@
 
 <?php 
 
+    require_once "utilities/redirectToView.php";
+
     // Temporary placeholder values for user role, first name and isLoggedIn
     $isLoggedIn = true;
     $loggedUser = array(
@@ -82,9 +84,9 @@
     function redirectToLink(event) {
         event.preventDefault();
         var href = event.target.getAttribute('href');
-        $page = href;
+        $view = href;
         baseHref= "http://localhost/osad44/php/PHP-Cafe-App/php-cafe-ordering-app"
-        window.location.href = baseHref +"?"+ "page=" + $page;
+        window.location.href = baseHref +"?"+ "view=" + $view;
         // window.location.href = href;
     }
 
