@@ -2,7 +2,7 @@
 
 require_once 'config/db_info.php';
 require_once 'models/User.php';
-require_once 'helpers/query_helper.php';
+include 'includes/pagination.php';
 class AdminUser {
     public $id;
     public $name;
@@ -18,6 +18,20 @@ class AdminUser {
 class AdminUserController {
     public function displayAdminUsers() {
 
+        $current_page = 1;
+        $total_pages = 2; 
+
+        // $onPageChange = function ($page) {
+        //     // Get the current URL
+        //     $url = $_SERVER['REQUEST_URI'];
+        
+        //     $separator = strpos($url, '?') !== false ? '&' : '?';
+        
+        //     $newUrl = $url . $separator . 'page=' . $page;
+        
+        //     header('Location: ' . $newUrl);
+        // };
+        
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
@@ -25,18 +39,20 @@ class AdminUserController {
 
         $params = [
             'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 10,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
 
         // var_dump( $params);
 
-        $search_fields = ['name', 'description'];
-
-        $modified_query = handle_query_params($base_query, $params, $search_fields);
+        $search_fields = ['name', 'name'];
     
-        $adminUsers = $db->customQuery($modified_query);
+        $result = $db->paramsQuery($base_query, $params, $search_fields);
+
+        $adminUsers = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
 
         // Simulate fetching admin users from a database
         // $adminUsers = [
@@ -50,6 +66,8 @@ class AdminUserController {
 
         // Include the view file to display admin users
         include './views/admin/admin_users_view.php';
+
+        Pagination($current_page, $total_pages);
     }
 
     public function editAdminUser($userId) {

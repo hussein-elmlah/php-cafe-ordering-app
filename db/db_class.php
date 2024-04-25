@@ -71,6 +71,84 @@ class Database {
         }
     }
 
+    public function paramsQuery($query, $params, $search_fields) {
+        try {
+                $max_limit = 50;
+                // var_dump($params);
+            
+                $page = isset($params['page']) ? intval($params['page']) : 1;
+                $limit = isset($params['limit']) ? intval($params['limit']) : 10;
+                $order_by = isset($params['order']) ? $params['order'] : null;
+                $search = isset($params['search']) ? $params['search'] : null;
+            
+                $filters = array_diff_key($params, array_flip(['page', 'limit', 'order', 'search']));
+            
+                if ($page < 1 || $limit < 1 || $limit > $max_limit) {
+                    // Handle invalid pagination parameters
+                    throw new Exception('Invalid pagination parameters');
+                }
+            
+                $filter_conditions = [];
+            
+                if ($search && $search_fields) {
+                    foreach ($search_fields as $field) {
+                        $filter_conditions[] = "$field LIKE '%" . $search . "%'";
+                    }
+                }
+            
+                if ($search && !$search_fields) {
+                    // Handle invalid search parameters
+                    throw new Exception('Invalid search parameters');
+                }
+            
+                foreach ($filters as $key => $value) {
+                    $filter_conditions[] = "$key = '$value'";
+                }
+            
+                if (!empty($filter_conditions)) {
+                    $query .= " WHERE " . implode(' AND ', $filter_conditions);
+                }
+            
+                if ($order_by) {
+                    $query .= " ORDER BY $order_by";
+                }
+            
+
+            // Count total records
+            $totalRecordsQuery = "SELECT COUNT(*) AS total_records FROM ($query) AS subquery";
+            $statement = $this->connection->prepare($totalRecordsQuery);
+            $statement->execute();
+            $totalRecords = $statement->fetch(PDO::FETCH_ASSOC)['total_records'];
+    
+            // Calculate total pages
+            $totalPages = ceil($totalRecords / $limit);
+    
+            // Calculate offset
+            $offset = ($page - 1) * $limit;
+    
+            // Add LIMIT and OFFSET to the original query
+            $query .= " LIMIT $limit OFFSET $offset";
+    
+            // Execute the query
+            $statement = $this->connection->prepare($query);
+            $statement->execute();
+    
+            // Fetch the data
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Return the data along with pagination information
+            return [
+                'data' => $data,
+                'total_pages' => $totalPages,
+                'total_records' => $totalRecords,
+                'current_page' => $page
+            ];
+        } catch (PDOException $e) {
+            // Handle any exceptions
+            echo "Error executing custom query: " . $e->getMessage();
+            return false;
+        }
+    }
 // ====================================================
 
     public function insert($table, $columns, $values) {
