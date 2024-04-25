@@ -24,37 +24,38 @@
                         <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/shop">Shop</a>
+                        <a class="nav-link" href="shop">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/wishlist">Wishlist</a>
+                        <a class="nav-link" href="wishlist">Wishlist</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/shoppingCart">Cart</a>
+                        <a class="nav-link" href="shoppingCart">Cart</a>
                     </li>
                 <?php endif; ?>
                 <?php if ($loggedUser['isAdmin']): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/categories">Categories</a>
+                        <a class="nav-link" href="admin/categories">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/products">Products</a>
+                        <a class="nav-link" href="admin/products">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/orders">Orders</a>
+                        <a class="nav-link" href="admin/orders">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/users">Users</a>
+                        <a class="nav-link" href="admin/users" onclick="redirectToLink(event)">Users</a>
+                        
                     </li>
                 <?php endif; ?>
             </ul>
             <div class="d-flex">
                 <?php if (!$loggedUser['isAdmin'] || !$isLoggedIn): ?>
-                    <a href="/shop" class="btn btn-outline-light me-2">Shop</a>
+                    <a href="shop" class="btn btn-outline-light me-2">Shop</a>
                 <?php endif; ?>
                 <?php if (!$isLoggedIn): ?>
-                    <a href="/login" class="btn btn-outline-light me-2">Login</a>
-                    <a href="/register" class="btn btn-outline-light">Register</a>
+                    <a href="login" class="btn btn-outline-light me-2">Login</a>
+                    <a href="register" class="btn btn-outline-light">Register</a>
                 <?php endif; ?>
                 <?php if ($isLoggedIn): ?>
                     <div class="dropdown">
@@ -62,9 +63,9 @@
                             <?= $loggedUser['first_name'] ?> <!-- Placeholder value -->
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="/userprofile">Profile</a></li>
+                            <li><a class="dropdown-item" href="userprofile">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/" onclick="handleLogout()">Logout</a></li>
+                            <li><a class="dropdown-item" href="" onclick="handleLogout()">Logout</a></li>
                         </ul>
                     </div>
                 <?php endif; ?>
@@ -72,3 +73,22 @@
         </div>
     </div>
 </nav>
+
+<script>
+
+    function redirectToLink(event) {
+        event.preventDefault();
+        var href = event.target.getAttribute('href');
+        window.location.href = href;
+    }
+
+    function addClickEventToNavbarLinks() {
+        var navbarLinks = document.querySelectorAll('.navbar-nav a.nav-link');
+        navbarLinks.forEach(function(link) {
+            link.onclick = redirectToLink;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', addClickEventToNavbarLinks);
+</script>
+
