@@ -1,8 +1,8 @@
-<!-- Temporary placeholder values for user role and first name -->
 <?php 
 
+    // Temporary placeholder values for user role, first name and isLoggedIn
     $loggedUser = array(
-        'role' => 'admin',
+        'isAdmin' => true,
         'first_name' => 'Hussein'
     );
     $isLoggedIn = true;
@@ -19,7 +19,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <?php if ($loggedUser['role'] == "user" || !$isLoggedIn): ?>
+                <?php if (!$loggedUser['isAdmin'] || !$isLoggedIn): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Home</a>
                     </li>
@@ -33,7 +33,7 @@
                         <a class="nav-link" href="/shoppingCart">Cart</a>
                     </li>
                 <?php endif; ?>
-                <?php if ($loggedUser['role'] == "admin"): ?>
+                <?php if ($loggedUser['isAdmin']): ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/categories">Categories</a>
                     </li>
@@ -49,7 +49,7 @@
                 <?php endif; ?>
             </ul>
             <div class="d-flex">
-                <?php if ($loggedUser['role'] == "user" || !$isLoggedIn): ?>
+                <?php if (!$loggedUser['isAdmin'] || !$isLoggedIn): ?>
                     <a href="/shop" class="btn btn-outline-light me-2">Shop</a>
                 <?php endif; ?>
                 <?php if (!$isLoggedIn): ?>
