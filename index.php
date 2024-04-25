@@ -9,12 +9,17 @@
 
 </head>
 <body class="">
+    
     <?php include './includes/navbar.php'; ?>
 
     <div class="container" style="min-height: 78vh;">
-        <h1>Welcome to Our Cafe!</h1>
-        <p>Explore our menu and manage orders using the links above.</p>
+        <!-- <h1>Welcome to Our Cafe!</h1>
+        <p>Explore our menu and manage orders using the links above.</p> -->
+
+        <?php include 'router.php'; ?>
+
     </div>
+
 
     <?php include './includes/footer.php'; ?>
 
