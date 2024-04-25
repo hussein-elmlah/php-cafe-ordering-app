@@ -82,9 +82,10 @@
     function redirectToLink(event) {
         event.preventDefault();
         var href = event.target.getAttribute('href');
-        $view = href;
-        baseHref= "http://localhost/osad44/php/PHP-Cafe-App/php-cafe-ordering-app"
-        window.location.href = baseHref +"?"+ "view=" + $view;
+        var view = href;
+        var baseHref = window.location.pathname;
+        // alert('baseHref: ' + baseHref);
+        window.location.href = baseHref + "?" + "view=" + view;
     }
 
     function addClickEventToNavbarLinks() {
