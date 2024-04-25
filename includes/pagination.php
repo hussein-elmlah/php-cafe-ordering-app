@@ -31,7 +31,7 @@ function Pagination($currentPage, $totalPages) {
         echo '<button class="join-item btn border mx-1 bg-dark text-white" onclick="onPageChange(' . $i . ')">' . $i . '</button>';
     }
     echo '</div>';
-    var_dump($currentPage);
+    // var_dump($currentPage);
 }
 
 ?>

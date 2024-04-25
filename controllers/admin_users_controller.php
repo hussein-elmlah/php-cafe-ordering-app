@@ -2,7 +2,6 @@
 
 require_once 'config/db_info.php';
 require_once 'models/User.php';
-require_once 'helpers/query_helper.php';
 include 'includes/pagination.php';
 class AdminUser {
     public $id;
@@ -40,7 +39,7 @@ class AdminUserController {
 
         $params = [
             'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 10,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
@@ -48,10 +47,12 @@ class AdminUserController {
         // var_dump( $params);
 
         $search_fields = ['name', 'name'];
-
-        $modified_query = handle_query_params($base_query, $params, $search_fields);
     
-        $adminUsers = $db->customQuery($modified_query);
+        $result = $db->paramsQuery($base_query, $params, $search_fields);
+
+        $adminUsers = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
 
         // Simulate fetching admin users from a database
         // $adminUsers = [
