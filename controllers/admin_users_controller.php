@@ -20,17 +20,6 @@ class AdminUserController {
 
         $current_page = 1;
         $total_pages = 2; 
-
-        // $onPageChange = function ($page) {
-        //     // Get the current URL
-        //     $url = $_SERVER['REQUEST_URI'];
-        
-        //     $separator = strpos($url, '?') !== false ? '&' : '?';
-        
-        //     $newUrl = $url . $separator . 'page=' . $page;
-        
-        //     header('Location: ' . $newUrl);
-        // };
         
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -71,19 +60,16 @@ class AdminUserController {
     }
 
     public function editAdminUser($userId) {
-        // You can include any necessary logic here to edit the admin user with the given ID
-        // For demonstration purposes, let's assume we have an edit form in a separate view file
+        // You can include any necessary logic here to edit
         include 'edit_admin_user_view.php';
     }
 
     public function deleteAdminUser($userId) {
-        // You can include any necessary logic here to delete the admin user with the given ID
-        // For demonstration purposes, let's assume we have a confirmation message in a separate view file
+        // You can include any necessary logic here to delete
         include 'delete_admin_user_confirmation_view.php';
     }
 }
 
-// Example usage:
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $userId = isset($_GET['user_id']) ? $_GET['user_id'] : null;
 
@@ -95,7 +81,6 @@ switch ($action) {
         if ($userId) {
             $adminUserController->editAdminUser($userId);
         } else {
-            // Handle error
             echo 'Invalid user ID';
         }
         break;
@@ -103,12 +88,10 @@ switch ($action) {
         if ($userId) {
             $adminUserController->deleteAdminUser($userId);
         } else {
-            // Handle error
             echo 'Invalid user ID';
         }
         break;
     default:
-        // Display admin users by default
         $adminUserController->displayAdminUsers();
         break;
 }

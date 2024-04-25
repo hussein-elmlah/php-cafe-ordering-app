@@ -1,9 +1,8 @@
-
 <?php 
 
     require_once "utilities/redirectToView.php";
 
-    // Temporary placeholder values for user role, first name and isLoggedIn
+    // Temporary placeholder values
     $isLoggedIn = true;
     $loggedUser = array(
         'isAdmin' => true,
@@ -11,7 +10,6 @@
     );
     
 ?>
-
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid px-4 fs-5">
@@ -64,7 +62,7 @@
                 <?php if ($isLoggedIn): ?>
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?= $loggedUser['first_name'] ?> <!-- Placeholder value -->
+                            <?= $loggedUser['first_name'] ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="userprofile">Profile</a></li>
@@ -87,7 +85,6 @@
         $view = href;
         baseHref= "http://localhost/osad44/php/PHP-Cafe-App/php-cafe-ordering-app"
         window.location.href = baseHref +"?"+ "view=" + $view;
-        // window.location.href = href;
     }
 
     function addClickEventToNavbarLinks() {
@@ -100,7 +97,6 @@
     document.addEventListener('DOMContentLoaded', addClickEventToNavbarLinks);
 
     function handleLogout(){
-        // alert("You are logging out");
         window.location.href = "logout";
     }
 </script>
