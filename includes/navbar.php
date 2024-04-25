@@ -1,13 +1,15 @@
+
 <?php 
 
     // Temporary placeholder values for user role, first name and isLoggedIn
+    $isLoggedIn = true;
     $loggedUser = array(
         'isAdmin' => true,
         'first_name' => 'Hussein'
     );
-    $isLoggedIn = true;
     
 ?>
+
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid px-4 fs-5">
@@ -35,16 +37,16 @@
                 <?php endif; ?>
                 <?php if ($loggedUser['isAdmin']): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin/categories">Categories</a>
+                        <a class="nav-link" href="admin-categories">Categories</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin/products">Products</a>
+                        <a class="nav-link" href="admin-products">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin/orders">Orders</a>
+                        <a class="nav-link" href="admin-orders">Orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin/users" onclick="redirectToLink(event)">Users</a>
+                        <a class="nav-link" href="admin-users">Users</a>
                         
                     </li>
                 <?php endif; ?>
@@ -65,7 +67,7 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="userprofile">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="" onclick="handleLogout()">Logout</a></li>
+                            <li><a class="dropdown-item" href="log" onclick="handleLogout()">Logout</a></li>
                         </ul>
                     </div>
                 <?php endif; ?>
@@ -74,21 +76,30 @@
     </div>
 </nav>
 
+
 <script>
 
     function redirectToLink(event) {
         event.preventDefault();
         var href = event.target.getAttribute('href');
-        window.location.href = href;
+        $page = href;
+        baseHref= "http://localhost/osad44/php/PHP-Cafe-App/php-cafe-ordering-app"
+        window.location.href = baseHref +"?"+ "page=" + $page;
+        // window.location.href = href;
     }
 
     function addClickEventToNavbarLinks() {
-        var navbarLinks = document.querySelectorAll('.navbar-nav a.nav-link');
+        var navbarLinks = document.querySelectorAll('a.nav-link, a');
         navbarLinks.forEach(function(link) {
             link.onclick = redirectToLink;
         });
     }
 
     document.addEventListener('DOMContentLoaded', addClickEventToNavbarLinks);
+
+    function handleLogout(){
+        // alert("You are logging out");
+        window.location.href = "logout";
+    }
 </script>
 
