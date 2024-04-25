@@ -24,15 +24,15 @@ class AdminUserController {
         $base_query = "SELECT * FROM users";
 
         $params = [
-            'page' =>  1,
-            'limit' =>  3,
-            'order' =>  'email',
-            'search' => 'Adm',
+            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 10,
+            'order' => isset($_GET['order']) ? $_GET['order'] : null,
+            'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
 
         // var_dump( $params);
 
-        $search_fields = ['name', 'name'];
+        $search_fields = ['name', 'description'];
 
         $modified_query = handle_query_params($base_query, $params, $search_fields);
     
