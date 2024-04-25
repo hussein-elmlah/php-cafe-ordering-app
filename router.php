@@ -1,5 +1,7 @@
 <?php
 
+require_once "utilities/redirectToPage.php";
+
 $requestPage = $_GET['page'] ?? '';
 
 // Temporary placeholder values for user role, first name and isLoggedIn
@@ -10,8 +12,9 @@ $loggedUser = array(
 );
 
 switch ($requestPage) {
-    case null:
+    case 'null':
         // Include admin-home controller
+        redirectToPage('admin-users'); // delete later
         break;
     case '':
         // Include admin-home controller
@@ -21,6 +24,7 @@ switch ($requestPage) {
         break;
     case '#':
         // Include admin-home controller
+        redirectToPage('admin-users'); // delete later
         break;
     case 'admin-users':
         if (!$loggedUser['isAdmin']){ break; }; // admin guard
