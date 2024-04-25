@@ -3,6 +3,7 @@
 require_once 'config/db_info.php';
 require_once 'models/User.php';
 require_once 'helpers/query_helper.php';
+include 'includes/pagination.php';
 class AdminUser {
     public $id;
     public $name;
@@ -18,6 +19,20 @@ class AdminUser {
 class AdminUserController {
     public function displayAdminUsers() {
 
+        $current_page = 1;
+        $total_pages = 2; 
+
+        // $onPageChange = function ($page) {
+        //     // Get the current URL
+        //     $url = $_SERVER['REQUEST_URI'];
+        
+        //     $separator = strpos($url, '?') !== false ? '&' : '?';
+        
+        //     $newUrl = $url . $separator . 'page=' . $page;
+        
+        //     header('Location: ' . $newUrl);
+        // };
+        
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
@@ -32,7 +47,7 @@ class AdminUserController {
 
         // var_dump( $params);
 
-        $search_fields = ['name', 'description'];
+        $search_fields = ['name', 'name'];
 
         $modified_query = handle_query_params($base_query, $params, $search_fields);
     
@@ -50,6 +65,8 @@ class AdminUserController {
 
         // Include the view file to display admin users
         include './views/admin/admin_users_view.php';
+
+        Pagination($current_page, $total_pages);
     }
 
     public function editAdminUser($userId) {
