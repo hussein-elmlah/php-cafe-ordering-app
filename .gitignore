@@ -1,2 +1,3 @@
 config/db_info.php
 views/admin/assets
+vendor

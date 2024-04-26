@@ -1,7 +1,6 @@
 <div class="admin-panel__content">
 
     <div class="row">
-
         <form class="row g-3" action="?view=admin-users&action=create" method="post" enctype="multipart/form-data">
             <div class="col-md-4">
                 <label for="inputAddress" class="form-label">Name</label>
@@ -27,11 +26,13 @@
                 <label for="inputState" class="form-label">Room</label>
                 <?php /* echo "<pre>"; var_dump($rooms) */ ?>
                 <select id="inputState" name="room" class="form-select">
-                <?php  if ($rooms){ foreach ($rooms as $room) {  ?>
-                    <option value="<?= $room['name'] ?>"><?= $room['name'] ?></option>
-                <?php  } }else{  ?>
+                    <?php if ($rooms) {
+                        foreach ($rooms as $room) {  ?>
+                            <option value="<?= $room['name'] ?>"><?= $room['name'] ?></option>
+                        <?php  }
+                    } else {  ?>
                         <option>...NO ROOMS...</option>
-                <?php  }  ?>
+                    <?php  }  ?>
                 </select>
             </div>
             <div class="col-md-4">

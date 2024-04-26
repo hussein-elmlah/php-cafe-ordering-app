@@ -1,6 +1,28 @@
 <div class="container mt-4">
     <a href="admin-users&action=add" class="btn btn-primary">Add a user</a> <br />
     <h1>Admin Users</h1>
+    
+    <?php if (isset($_SESSION['error'])) {
+        echo '<div class="alert alert-danger" role="alert" id="error_message">' .
+            $_SESSION['error']
+            . '</div>';
+        }else if (isset($_SESSION['msg'])) {
+            echo '<div class="alert alert-success" role="alert" id="success_message">' .
+                $_SESSION['msg']
+                . '</div>';
+        }
+
+        echo '<script> 
+            setTimeout(() => {
+                document.getElementById("error_message").style.display = "none";
+            }, 2000);
+            setTimeout(() => {
+                document.getElementById("success_message").style.display = "none";
+            }, 2000);
+            </script>';
+        unset($_SESSION['error']);
+        unset($_SESSION['msg']);
+    ?>
     <table class="table">
         <thead>
             <tr>

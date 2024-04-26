@@ -1,6 +1,10 @@
 <?php
-
+session_start();
 // include (realpath(dirname(__FILE__)."config/db_info.php"));
+require_once 'vendor/autoload.php';
+use Respect\Validation\Validator as DataValidation;
+use Respect\Validation\Exceptions\NestedValidationException;
+use Respect\Validation\Exceptions\ValidationException;
 require_once 'config/db_info.php';
 require_once 'db/db_class.php';
 // require_once 'models/User.php';
@@ -27,16 +31,31 @@ class AdminUserController {
 
     }
     public function addAdminUser() {
-        $profile = file_get_contents($_FILES['profile']['tmp_name']);
-        $_POST['profile'] = $profile;
-        $this->db->insert("users", "name,email,password,room,ext,profile", ":name,:email,:password,:room,:ext,:profile", $_POST);
+        
+        $profile = $_FILES['profile']['tmp_name'];
+        $isEmail = DataValidation::email(); 
+        $isImage = DataValidation::image(); 
+
+        try {
+            DataValidation::stringType()->length(8, null)->check($_POST['password']);
+            DataValidation::stringType()->length(8, null)->check($_POST['password_confirmation']);
+            DataValidation::keyValue('password_confirmation', 'equals', 'password')->check($_POST);
+            $isEmail->check($_POST['email']);
+            $isImage->check($profile);
+            
+            $_POST['profile'] = file_get_contents($profile);
+            $this->db->insert("users", "name,email,password,room,ext,profile",
+                             ":name,:email,:password,:room,:ext,:profile", $_POST);
+            $_SESSION['msg'] = "User is added successfully";
+        } catch(ValidationException $exception) {
+            $_SESSION['error'] = $exception->getMessage();
+        }
         echo '<script> 
                 window.location.href = window.location.pathname + "?view=admin-users";
               </script>';
     }
 
-    public function viewAddAdminUser() {
-        
+    public function viewAddAdminUser() {        
         $roomQuery = "SELECT * FROM rooms";
         $rooms = $this->db->customQuery($roomQuery);
         include 'views/admin/admin_add_user_view.php';
@@ -75,12 +94,9 @@ class AdminUserController {
         $roomQuery = "SELECT * FROM rooms";
         $rooms = $this->db->customQuery($roomQuery);
         $userData = $this->db->customQuery("SELECT * FROM users WHERE id=$userId");
-        // echo"<pre>";
-        // var_dump($userData);
         include 'views/admin/admin_edit_user_view.php';
         return $userData;
     }
-
 
     public function updateAdminUser($userId, $user_data) {
 
@@ -107,14 +123,12 @@ class AdminUserController {
         }
         $fields = rtrim($fields, ","); 
         $fields_to_be_updated = rtrim($fields_to_be_updated, ","); 
-
-        // echo $fields . "<br />";
-        // echo $fields_to_be_updated . "<br />";
-        // echo "<pre>";
-        // var_dump($values_to_be_updated);
-        $updated = $this->db->update("users", $userId, $fields, $fields_to_be_updated, $values_to_be_updated);
-
-        // include 'views/admin/admin_edit_user_view.php';
+        if (count($values_to_be_updated) > 0) {
+            $this->db->update("users", $userId, $fields, $fields_to_be_updated, $values_to_be_updated);
+        }
+        echo '<script>
+                window.location.href = window.location.pathname + "?view=admin-users";
+              </script>';
     }
 
     public function deleteAdminUser($userId) {
