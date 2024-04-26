@@ -1,8 +1,3 @@
-<?php
-    // echo '<script>alert("Page not found 404 status");</script>';
-    // http_response_code(404);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

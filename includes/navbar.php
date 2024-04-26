@@ -1,7 +1,8 @@
-
 <?php 
 
-    // Temporary placeholder values for user role, first name and isLoggedIn
+    require_once "utilities/redirectToView.php";
+
+    // Temporary placeholder values
     $isLoggedIn = true;
     $loggedUser = array(
         'isAdmin' => true,
@@ -10,8 +11,7 @@
     
 ?>
 
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark z-5">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid px-4 fs-5">
         <a class="navbar-brand" href="#">
             <i class="fas fa-coffee"></i>
@@ -62,7 +62,7 @@
                 <?php if ($isLoggedIn): ?>
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?= $loggedUser['first_name'] ?> <!-- Placeholder value -->
+                            <?= $loggedUser['first_name'] ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="userprofile">Profile</a></li>
@@ -86,6 +86,10 @@
         baseHref= "http://localhost/cafe"
         window.location.href = baseHref +"?"+ "page=" + $page;
         // window.location.href = href;
+        var view = href;
+        var baseHref = window.location.pathname;
+        // alert('baseHref: ' + baseHref);
+        window.location.href = baseHref + "?" + "view=" + view;
     }
 
     function addClickEventToNavbarLinks() {
@@ -98,7 +102,6 @@
     document.addEventListener('DOMContentLoaded', addClickEventToNavbarLinks);
 
     function handleLogout(){
-        // alert("You are logging out");
         window.location.href = "logout";
     }
 </script>

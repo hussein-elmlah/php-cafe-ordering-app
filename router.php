@@ -1,26 +1,29 @@
 <?php
 
-$requestPage = $_GET['page'] ?? '';
+require_once "utilities/redirectToView.php";
 
-// Temporary placeholder values for user role, first name and isLoggedIn
-$isLoggedIn = true;
+$requestView = $_GET['view'] ?? '';
+
+// Temporary placeholder values
 $loggedUser = array(
     'isAdmin' => true,
     'first_name' => 'Hussein'
 );
 
-switch ($requestPage) {
-    case null:
-        // Include admin-home controller
+switch ($requestView) {
+    case 'null':
+        // Include admin-home controller here
+        redirectToView('admin-users'); // delete later
         break;
     case '':
-        // Include admin-home controller
+        // Include admin-home controller here
         break;
     case '/':
-        // Include admin-home controller
+        // Include admin-home controller here
         break;
     case '#':
-        // Include admin-home controller
+        // Include admin-home controller here
+        redirectToView('admin-users'); // delete later
         break;
     case 'admin-users':
         // if (!$loggedUser['isAdmin']){ break; }; // admin guard
