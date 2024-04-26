@@ -1,11 +1,19 @@
 <?php
 
-require_once '../db/db_class.php';
-require_once '../config/db_info.php';
+require_once 'db/db_class.php';
+require_once 'config/db_info.php';
 
 class User {
 
+    // TODO: handle database connection using already prepared db_class
     private $db;
+
+    public $name;
+    public $email;
+    public $password;
+    public $room;
+    public $ext;
+    public $profile;
 
     public function __construct() {
         $this->db = Database::getInstance();

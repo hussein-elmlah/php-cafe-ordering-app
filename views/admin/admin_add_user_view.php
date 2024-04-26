@@ -47,33 +47,33 @@
 
             </div>
             <div class="col-md-8">
-                <form class="form-horizontal" action="add-product.php" method="post" enctype="multipart/form-data">
+                <form class="form-horizontal" action="admin-users" method="post" enctype="multipart/form-data">
 
                     <div class="form-group">
                         <label for="product-title" class="col-sm-3 control-label">User Name</label>
                         <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" value="<?= @$_POST['title'] ?>" placeholder="Product Title">
+                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="product-title" class="col-sm-3 control-label">User Email</label>
                         <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" value="<?= @$_POST['title'] ?>" placeholder="Product Title">
+                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="product-title" class="col-sm-3 control-label">User Password</label>
                         <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" value="<?= @$_POST['title'] ?>" placeholder="Product Title">
+                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="product-price" class="col-sm-3 control-label">User Password Confirmation</label>
                         <div class="col-sm-9">
-                            <input type="text" name="price" class="form-control" id="product-price" value="<?= @$_POST['price'] ?>" placeholder="Product Price">
+                            <input type="text" name="price" class="form-control" id="product-price" placeholder="Product Price">
                         </div>
                     </div>
 
@@ -91,7 +91,7 @@
                     <div class="form-group">
                         <label for="product-title" class="col-sm-3 control-label">User Ext</label>
                         <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" value="<?= @$_POST['title'] ?>" placeholder="Product Title">
+                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
                         </div>
                     </div>
 

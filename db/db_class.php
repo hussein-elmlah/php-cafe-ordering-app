@@ -1,6 +1,6 @@
 <?php
 
-require_once '../config/db_info.php';
+// require_once 'config/db_info.php';
 
 class Database {
 
@@ -20,7 +20,7 @@ class Database {
         return self::$instance;
     }
 
-    public function connect($host, $username, $password, $database) 
+    public function connect($host, $username, $password, $database)
     {
         try {
             $dsn = "mysql:host=$host;dbname=$database";
@@ -175,9 +175,9 @@ class Database {
 
 }
 
-$database = Database::getInstance();
+// $database = Database::getInstance();
 
-$database->connect(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
+// $database->connect(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 
 // $database->select(DB_TABLE);
 

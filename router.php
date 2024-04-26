@@ -23,8 +23,8 @@ switch ($requestPage) {
         // Include admin-home controller
         break;
     case 'admin-users':
-        if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        include 'controllers/admin_users_controller.php';
+        // if (!$loggedUser['isAdmin']){ break; }; // admin guard
+        include 'views/admin/admin_users_view.php';
         break;
     default:
         include 'views/404.php';

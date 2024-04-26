@@ -11,7 +11,7 @@
 ?>
 
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark z-5">
     <div class="container-fluid px-4 fs-5">
         <a class="navbar-brand" href="#">
             <i class="fas fa-coffee"></i>
@@ -83,7 +83,7 @@
         event.preventDefault();
         var href = event.target.getAttribute('href');
         $page = href;
-        baseHref= "http://localhost/osad44/php/PHP-Cafe-App/php-cafe-ordering-app"
+        baseHref= "http://localhost/cafe"
         window.location.href = baseHref +"?"+ "page=" + $page;
         // window.location.href = href;
     }
