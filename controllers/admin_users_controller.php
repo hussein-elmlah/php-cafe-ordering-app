@@ -19,19 +19,41 @@ include 'includes/pagination.php';
 // }
 
 class AdminUserController {
-    // public function addAdminUser() {
-    //     $user = new User();
-    //     echo "asd";
-    //     include 'delete_admin_user_confirmation_view.php';
-    // }
+    private $db;
+
+    public function __construct (){
+        $this->db = Database::getInstance();
+        $this->db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    }
+    public function addAdminUser() {
+        [
+            "name" => $name,
+            "email" => $email,
+            "password" => $password,
+            "room" => $room,
+            "ext" => $ext,
+            "profile" => $profile
+        ] = $_POST;
+
+        // echo $name, $email, $password;
+        $inserted = $this->db->insert("users", "name, email, password, room, ext, profile", "'$name', '$email', '$password', $room, '$ext', '$profile'");
+
+        // include 'views/admin/admin_users_view.php';
+    }
+
+    public function viewAddAdminUser() {
+        
+        $roomQuery = "SELECT * FROM rooms";
+        $rooms = $this->db->customQuery($roomQuery);
+
+        include 'views/admin/admin_add_user_view.php';
+    }
 
     public function displayAdminUsers() {
 
         $current_page = 1;
         $total_pages = 2; 
-        
-        $db = Database::getInstance();
-        $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
         $base_query = "SELECT * FROM users";
 
@@ -43,7 +65,7 @@ class AdminUserController {
         ];
         $search_fields = ['name', 'name'];
     
-        $result = $db->paramsQuery($base_query, $params, $search_fields);
+        $result = $this->db->paramsQuery($base_query, $params, $search_fields);
 
         $adminUsers = $result['data'];
         $current_page = $result['current_page'];
@@ -63,8 +85,8 @@ class AdminUserController {
     }
 
     public function deleteAdminUser($userId) {
-        // You can include any necessary logic here to delete
-        include 'delete_admin_user_confirmation_view.php';
+        $delete = $this->db->delete("users", $userId);
+        $this->displayAdminUsers();
     }
 }
 
@@ -77,7 +99,11 @@ $adminUserController = new AdminUserController();
 
 switch ($action) {
     case 'add':
-        // $adminUserController->addAdminUser($data);
+        $adminUserController->viewAddAdminUser($data);
+        break;
+
+    case 'create':
+        $adminUserController->addAdminUser($data);
         break;
 
     case 'edit':
@@ -89,7 +115,7 @@ switch ($action) {
         break;
     case 'delete':
         if ($userId) {
-            // $adminUserController->deleteAdminUser($userId);
+            $adminUserController->deleteAdminUser($userId);
         } else {
             echo 'Invalid user ID';
         }

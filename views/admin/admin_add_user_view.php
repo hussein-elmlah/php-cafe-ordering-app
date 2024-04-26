@@ -1,122 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="admin-panel__content">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="Soft Masr - Project">
-    <meta name="author" content="Ahmed ElShahat">
-    <title>Admin </title>
+    <div class="row">
 
-    <!-- Favico -->
-    <link rel="icon" type="image/png" href="./assets/images/admin.png">
-
-    <!-- FontAwesome -->
-    <link href="./assets/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Bootstrap -->
-    <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Style -->
-    <link href="./assets/css/style.css" rel="stylesheet">
-
-    <style>
-        body,
-        .col-md-8,
-        .col-md-12,
-        .row,
-        .section-header,
-        .admin-panel__content {
-            background-color: white;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="admin-panel__content">
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-header">
-                    <h1>Add User</h1>
-                </div>
-
-
+        <form class="row g-3" action="?view=admin-users&action=create" method="post">
+            <div class="col-md-4">
+                <label for="inputAddress" class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" id="inputAddress">
             </div>
             <div class="col-md-8">
-                <form class="form-horizontal" action="admin-users" method="post" enctype="multipart/form-data">
-
-                    <div class="form-group">
-                        <label for="product-title" class="col-sm-3 control-label">User Name</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="product-title" class="col-sm-3 control-label">User Email</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="product-title" class="col-sm-3 control-label">User Password</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="product-price" class="col-sm-3 control-label">User Password Confirmation</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="price" class="form-control" id="product-price" placeholder="Product Price">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="product-availability" class="col-sm-3 control-label">User Room</label>
-                        <div class="col-sm-9">
-                            <select name="available" class="form-control" id="product-availability">
-                                <!-- <option disabled selected> -- Select -- </option> -->
-                                <option value="Available" selected>Available</option>
-                                <option value="Not Available">Not Available</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="product-title" class="col-sm-3 control-label">User Ext</label>
-                        <div class="col-sm-9">
-                            <input type="text" name="title" class="form-control" id="product-title" placeholder="Product Title">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="product-image" class="col-sm-3 control-label">User Profile Image</label>
-                        <div class="col-sm-9">
-                            <input type="file" name="imageProd" class="form-control" id="product-image">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-offset-3 col-sm-9">
-                            <button type="submit" name="addprod" class="btn btn-success"><i class="fa fa-plus"></i> Add User</button>
-                        </div>
-                    </div>
-                </form>
+                <label for="inputEmail4" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" id="inputEmail4">
             </div>
-        </div>
+            <div class="col-md-6">
+                <label for="inputEmail4" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" id="inputEmail4">
+            </div>
+            <div class="col-md-6">
+                <label for="inputPassword4" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="password_confirmation" id="inputPassword4">
+            </div>
+            <div class="col-md-4">
+                <label for="inputCity" class="form-label">Ext</label>
+                <input type="text" class="form-control" name="ext" id="inputCity">
+            </div>
+            <div class="col-md-4">
+                <label for="inputState" class="form-label">Room</label>
+                <?php /* echo "<pre>"; var_dump($rooms) */ ?>
+                <select id="inputState" name="room" class="form-select">
+                <?php  if ($rooms){ foreach ($rooms as $room) {  ?>
+                    <option value="<?= $room['id'] ?>"><?= $room['name'] ?></option>
+                <?php  } }else{  ?>
+                        <option>...NO ROOMS...</option>
+                <?php  }  ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="inputZip" class="form-label">Profile</label>
+                <input type="file" class="form-control" name="profile" id="inputZip">
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
 
     </div>
 
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="./assets/js/jquery.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="./assets/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+</div>

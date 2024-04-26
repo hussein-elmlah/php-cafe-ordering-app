@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <a href="#" class="btn btn-primary">Add an admin</a> <br />
+    <a href="admin-users&action=add" class="btn btn-primary">Add an admin</a> <br />
     <h1>Admin Users</h1>
     <table class="table">
         <thead>
@@ -24,7 +24,7 @@
                     <td> <img src="<?php echo "data:image/jpeg;base64," . base64_encode($user['profile']) ?>" width="100" height="70" /></td>
                     <td>
                         <a href="#" class="btn btn-primary">Edit</a>
-                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="admin-users&action=delete&user_id=<?= $user['id'] ?>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
