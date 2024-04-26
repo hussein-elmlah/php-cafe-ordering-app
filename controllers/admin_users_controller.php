@@ -27,23 +27,12 @@ class AdminUserController {
 
     }
     public function addAdminUser() {
-
-        // [
-        //     "name" => $name,
-        //     "email" => $email,
-        //     "password" => $password,
-        //     "room" => $room,
-        //     "ext" => $ext,
-        // ] = $_POST;
-
-        // echo "<pre>";
-        // var_dump($_FILES);
         $profile = file_get_contents($_FILES['profile']['tmp_name']);
         $_POST['profile'] = $profile;
-        // echo $name, $email, $password;
-        $inserted = $this->db->insert("users", "name,email,password,room,ext,profile", ":name,:email,:password,:room,:ext,:profile", $_POST);
-       
-        $this->displayAdminUsers();
+        $this->db->insert("users", "name,email,password,room,ext,profile", ":name,:email,:password,:room,:ext,:profile", $_POST);
+        echo '<script> 
+                window.location.href = window.location.pathname + "?view=admin-users";
+              </script>';
     }
 
     public function viewAddAdminUser() {
@@ -83,8 +72,49 @@ class AdminUserController {
     }
 
     public function editAdminUser($userId) {
-        // You can include any necessary logic here to edit
-        include 'edit_admin_user_view.php';
+        $roomQuery = "SELECT * FROM rooms";
+        $rooms = $this->db->customQuery($roomQuery);
+        $userData = $this->db->customQuery("SELECT * FROM users WHERE id=$userId");
+        // echo"<pre>";
+        // var_dump($userData);
+        include 'views/admin/admin_edit_user_view.php';
+        return $userData;
+    }
+
+
+    public function updateAdminUser($userId, $user_data) {
+
+        // if a new image is uploaded.
+        $_POST['room'] = intval($_POST['room']);
+        
+        if (($_FILES['profile']['tmp_name'])) {
+            $profile = file_get_contents($_FILES['profile']['tmp_name']);
+            $_POST['profile'] = $profile;
+        }
+
+        $db_fields = array_keys($user_data[0]);
+        array_shift($db_fields);
+        $fields = '';
+        $fields_to_be_updated = '';
+        $values_to_be_updated = [];
+        
+        foreach ($db_fields as $field) {
+            if ( isset($_POST[$field]) && $user_data[0][$field] !== $_POST[$field]) {
+                $fields .= "$field=:$field,";
+                $fields_to_be_updated .= ":$field,";
+                $values_to_be_updated[] = $_POST[$field];
+            }            
+        }
+        $fields = rtrim($fields, ","); 
+        $fields_to_be_updated = rtrim($fields_to_be_updated, ","); 
+
+        // echo $fields . "<br />";
+        // echo $fields_to_be_updated . "<br />";
+        // echo "<pre>";
+        // var_dump($values_to_be_updated);
+        $updated = $this->db->update("users", $userId, $fields, $fields_to_be_updated, $values_to_be_updated);
+
+        // include 'views/admin/admin_edit_user_view.php';
     }
 
     public function deleteAdminUser($userId) {
@@ -111,7 +141,16 @@ switch ($action) {
 
     case 'edit':
         if ($userId) {
-            // $adminUserController->editAdminUser($userId);
+            $adminUserController->editAdminUser($userId);
+        } else {
+            echo 'Invalid user ID';
+        }
+        break;
+
+    case 'update':
+        if ($userId) {
+            $user_data = $adminUserController->editAdminUser($userId);
+            $adminUserController->updateAdminUser($userId, $user_data);
         } else {
             echo 'Invalid user ID';
         }

@@ -168,10 +168,24 @@ class Database {
         }
     }
 
-    public function update($table, $id, $fields) {
+    public function update($table, $id, $fields, $keys, $values) {
         $query = "UPDATE $table SET $fields WHERE id = :id";
+        // $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement = $this->connection->prepare($query);
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $columns = explode(",", $keys);
+        // $values = explode(",", $values);
+       
+        // echo "<pre >";
+        // var_dump($columns);
+
+        for ($i=0; $i < count($columns); $i++) { 
+            if ($columns[$i] === "room") {
+                $statement->bindParam($columns[$i], $values[$i], PDO::PARAM_INT);
+            }
+            $statement->bindParam($columns[$i], $values[$i], PDO::PARAM_STR);
+        }
 
         try {
             $statement->execute();

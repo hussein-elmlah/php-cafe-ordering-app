@@ -23,7 +23,7 @@
                     <td><?php echo $user['ext']; ?></td>
                     <td> <img src="<?php echo "data:image/jpeg;base64," . base64_encode($user['profile']) ?>" width="100" height="70" /></td>
                     <td>
-                        <a href="#" class="btn btn-primary">Edit</a>
+                        <a href="admin-users&action=edit&user_id=<?= $user['id'] ?>" class="btn btn-primary">Edit</a>
                         <a href="admin-users&action=delete&user_id=<?= $user['id'] ?>" class="btn btn-danger">Delete</a>
                     </td>
                 </tr>
