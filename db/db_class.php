@@ -130,9 +130,16 @@ class Database {
             }
     }
 
-    public function insert($table, $columns, $values) {
+    public function insert($table, $columns, $values, $data) {
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
         $statement = $this->connection->prepare($query);
+
+        $values = explode(",", $values);
+        $columns = explode(",", $columns);
+        
+        for ($i=0; $i < count($values); $i++) { 
+            $statement->bindParam("$values[$i]", $data[$columns[$i]]);
+        }
 
         try {
             $statement->execute();

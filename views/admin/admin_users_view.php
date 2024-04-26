@@ -1,5 +1,5 @@
 <div class="container mt-4">
-    <a href="admin-users&action=add" class="btn btn-primary">Add an admin</a> <br />
+    <a href="admin-users&action=add" class="btn btn-primary">Add a user</a> <br />
     <h1>Admin Users</h1>
     <table class="table">
         <thead>

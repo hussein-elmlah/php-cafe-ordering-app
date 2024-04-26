@@ -27,26 +27,29 @@ class AdminUserController {
 
     }
     public function addAdminUser() {
-        [
-            "name" => $name,
-            "email" => $email,
-            "password" => $password,
-            "room" => $room,
-            "ext" => $ext,
-            "profile" => $profile
-        ] = $_POST;
 
+        // [
+        //     "name" => $name,
+        //     "email" => $email,
+        //     "password" => $password,
+        //     "room" => $room,
+        //     "ext" => $ext,
+        // ] = $_POST;
+
+        // echo "<pre>";
+        // var_dump($_FILES);
+        $profile = file_get_contents($_FILES['profile']['tmp_name']);
+        $_POST['profile'] = $profile;
         // echo $name, $email, $password;
-        $inserted = $this->db->insert("users", "name, email, password, room, ext, profile", "'$name', '$email', '$password', $room, '$ext', '$profile'");
-
-        // include 'views/admin/admin_users_view.php';
+        $inserted = $this->db->insert("users", "name,email,password,room,ext,profile", ":name,:email,:password,:room,:ext,:profile", $_POST);
+       
+        $this->displayAdminUsers();
     }
 
     public function viewAddAdminUser() {
         
         $roomQuery = "SELECT * FROM rooms";
         $rooms = $this->db->customQuery($roomQuery);
-
         include 'views/admin/admin_add_user_view.php';
     }
 
