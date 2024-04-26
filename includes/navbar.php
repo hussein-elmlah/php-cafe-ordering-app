@@ -81,14 +81,8 @@
 
     function redirectToLink(event) {
         event.preventDefault();
-        var href = event.target.getAttribute('href');
-        $page = href;
-        baseHref= "http://localhost/cafe"
-        window.location.href = baseHref +"?"+ "page=" + $page;
-        // window.location.href = href;
-        var view = href;
-        var baseHref = window.location.pathname;
-        // alert('baseHref: ' + baseHref);
+        var baseHref = window.location.pathname;    // "http://localhost/cafe"
+        var view = event.target.getAttribute('href');
         window.location.href = baseHref + "?" + "view=" + view;
     }
 

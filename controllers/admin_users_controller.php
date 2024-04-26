@@ -1,36 +1,29 @@
 <?php
 
+// include (realpath(dirname(__FILE__)."config/db_info.php"));
 require_once 'config/db_info.php';
-require_once 'models/User.php';
+require_once 'db/db_class.php';
+// require_once 'models/User.php';
 include 'includes/pagination.php';
-class AdminUser {
-    public $id;
-    public $name;
-    public $email;
 
-    public function __construct($id, $name, $email) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-    }
-}
+// class AdminUser {
+//     public $id;
+//     public $name;
+//     public $email;
+
+//     public function __construct($id, $name, $email) {
+//         $this->id = $id;
+//         $this->name = $name;
+//         $this->email = $email;
+//     }
+// }
 
 class AdminUserController {
-    public function addAdminUser() {
-        $user = new User();
-        echo "asd";
-        include 'delete_admin_user_confirmation_view.php';
-    }
-
-
-
-
-
-
-
-
-
-
+    // public function addAdminUser() {
+    //     $user = new User();
+    //     echo "asd";
+    //     include 'delete_admin_user_confirmation_view.php';
+    // }
 
     public function displayAdminUsers() {
 
@@ -48,9 +41,6 @@ class AdminUserController {
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
-
-        // var_dump( $params);
-
         $search_fields = ['name', 'name'];
     
         $result = $db->paramsQuery($base_query, $params, $search_fields);
@@ -59,18 +49,10 @@ class AdminUserController {
         $current_page = $result['current_page'];
         $total_pages = $result['total_pages'];
 
-        // Simulate fetching admin users from a database
-        // $adminUsers = [
-        //     new AdminUser(1, 'Admin 1', 'admin1@example.com'),
-        //     new AdminUser(2, 'Admin 2', 'admin2@example.com'),
-        //     new AdminUser(3, 'Admin 3', 'admin3@example.com')
-        // ];
-
-        // echo "<script>alert('adminUsers: |$adminUsers|');</script>";
 
 
         // Include the view file to display admin users
-        include './views/admin/admin_users_view.php';
+        include 'views/admin/admin_users_view.php';
 
         Pagination($current_page, $total_pages);
     }
@@ -95,7 +77,7 @@ $adminUserController = new AdminUserController();
 
 switch ($action) {
     case 'add':
-        $adminUserController->addAdminUser($data);
+        // $adminUserController->addAdminUser($data);
         break;
 
     case 'edit':

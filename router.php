@@ -27,7 +27,8 @@ switch ($requestView) {
         break;
     case 'admin-users':
         // if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        include 'views/admin/admin_users_view.php';
+        // include 'views/admin/admin_users_view.php';
+        include 'controllers/admin_users_controller.php';
         break;
     default:
         include 'views/404.php';

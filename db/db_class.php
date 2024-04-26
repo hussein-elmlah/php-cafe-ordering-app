@@ -66,7 +66,6 @@ class Database {
     public function paramsQuery($query, $params, $search_fields) {
         try {
                 $max_limit = 50;
-                // var_dump($params);
             
                 $page = isset($params['page']) ? intval($params['page']) : 1;
                 $limit = isset($params['limit']) ? intval($params['limit']) : 10;
@@ -80,20 +79,25 @@ class Database {
                 }
             
                 $filter_conditions = [];
+                
                 if ($search && $search_fields) {
                     foreach ($search_fields as $field) {
                         $filter_conditions[] = "$field LIKE '%" . $search . "%'";
                     }
                 }
+                
                 if ($search && !$search_fields) {
                     throw new Exception('Invalid search parameters');
                 }
+                
                 foreach ($filters as $key => $value) {
                     $filter_conditions[] = "$key = '$value'";
                 }
+                
                 if (!empty($filter_conditions)) {
                     $query .= " WHERE " . implode(' AND ', $filter_conditions);
                 }
+
                 if ($order_by) {
                     $query .= " ORDER BY $order_by";
                 }
@@ -109,7 +113,7 @@ class Database {
                 $query .= " LIMIT $limit OFFSET $offset";
                 
                 $statement = $this->connection->prepare($query);
-                $statement->execute();
+                $statement->execute();      
                 
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
                 
@@ -119,6 +123,7 @@ class Database {
                     'total_records' => $totalRecords,
                     'current_page' => $page
                 ];
+
             } catch (PDOException $e) {
                 echo "Error executing custom query: " . $e->getMessage();
                 return false;
