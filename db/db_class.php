@@ -12,6 +12,10 @@ class Database {
 
     }
 
+    public function prepare($query) {
+        return $this->connection->prepare($query);
+    }
+
     public static function getInstance() 
     {
         if (!self::$instance) {
