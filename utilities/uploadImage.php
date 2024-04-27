@@ -50,7 +50,7 @@ function uploadImage($files, $old_data)
 
     return [
         'errors' => $errors,
-        'old_data' => $old_data
+        'data' => $old_data
     ];
 }
 
@@ -58,6 +58,9 @@ function uploadImage($files, $old_data)
 // $files = $_FILES;
 // $data = ['lastImage' => '/path/to/last/image.jpg'];
 // $result = uploadImage($files, $old_data);
+// $errors = $result["errors"];
+// $data = $result["data"];
+// $image_path = $data['image'];
 
 // print_r($result);
 
