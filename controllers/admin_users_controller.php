@@ -95,5 +95,3 @@ switch ($action) {
         $adminUserController->displayAdminUsers();
         break;
 }
-
-?>

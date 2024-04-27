@@ -6,25 +6,6 @@ require_once 'models/orders.php';
 //require_once  'models/products.php';
 require_once 'models/order_items.php';
 include 'includes/pagination.php';
-class AdminOrders
-{
-    public $order_id;
-    public $user_email;
-    public $status;
-    public $created_date;
-    public $room;
-    public $total_price;
-    public function __construct($order_id,$user_email,$status, $room, $created_date,$total_price)
-    {
-     $this->order_id = $order_id;
-     $this->user_email = $user_email;
-     $this->status = $status;
-     $this->room = $room;
-     $this->total_price = $total_price;
-     $this->created_date = $created_date;
-
-    }
-}
 class AdminOrdersController
 {
     public function displayAdminOrders()
