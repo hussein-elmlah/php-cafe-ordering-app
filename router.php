@@ -29,7 +29,9 @@ switch ($requestView) {
         if (!$loggedUser['isAdmin']){ break; }; // admin guard
         include 'controllers/admin_users_controller.php';
         break;
-
+    case 'admin-categories':
+            include 'views/admin/add_category.php';
+            break;
     case 'admin-categories':
             include 'controllers/category_controller.php';
             $categoryController = new CategoryController();
