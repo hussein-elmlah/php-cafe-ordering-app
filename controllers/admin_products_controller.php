@@ -2,6 +2,7 @@
 
 require_once 'db/db_class.php'; 
 require_once 'models/ProductModel.php';
+include 'includes/pagination.php';
 
 // Initialize variables to hold form data and error messages
 $name = $error = '';
@@ -16,16 +17,21 @@ class ProductController {
 
     // Method to fetch all products
     public function getAllProducts() {
-        try {
-            $sql = "SELECT * FROM products";
-            $stmt =  $this->db->prepare($sql);
-            $stmt->execute();
-            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $products;
-        } catch (PDOException $e) {
-            return []; // Return empty array on failure
-        }
+        $base_query = "SELECT * FROM products";
+
+        $params = [
+            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 3,
+            'order' => isset($_GET['order']) ? $_GET['order'] : null,
+            'search' => isset($_GET['search']) ? $_GET['search'] : null,
+        ];
+
+        $search_fields = ['name', 'name'];
+    
+        return $this->db->paramsQuery($base_query, $params, $search_fields);
     }
+
+    
 
     // Method to fetch all categories
     public function getAllCategories() {
@@ -42,7 +48,7 @@ class ProductController {
     }
 
     // Method to add a product
-    public function addProduct($name, $description, $price, $category_id) {
+    public function addProduct($name,$image, $description, $price, $category_id) {
         try {
             // Check if the product with the same name already exists
            
@@ -75,11 +81,27 @@ class ProductController {
 // Create an instance of the ProductController class
 $productController = new ProductController();
 
+//upload images
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["name"])) {
+        $name = $_POST["name"];
+        $data = ['lastImage' => ''];
+        $imageUploadResult = uploadImage($_FILES, $data);
+        $image_path = $imageUploadResult['data']['image'];
+        
+        $result = $productController->addProduct($name,$image, $description, $price, $category_id);
+        if ($result) {
+            echo json_encode(array('status' => 'success'));
+        } else {
+            echo json_encode(array('status' => 'error', 'message' => 'Failed to add category'));
+        }
+    }
+}
 // Fetch categories data
 $categories = $productController->getAllCategories();
 
 // Fetch products data
-$products = $productController->getAllProducts();
+$result = $productController->getAllProducts();
 
 // Check if form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -93,6 +115,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+// Fetch all products to display
+$products = isset($result['data']) ? $result['data'] : [];
+$current_page = isset($result['current_page']) ? $result['current_page'] : 1;
+$total_pages = isset($result['total_pages']) ? $result['total_pages'] : 1;
+
 // Include the view file
 include 'views/admin/add_product.php';
+Pagination($current_page, $total_pages);
 ?>
