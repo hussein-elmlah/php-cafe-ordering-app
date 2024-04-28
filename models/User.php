@@ -42,6 +42,6 @@ class User {
 
 }
 
-// $user = new User();
+ $user = new User();
 
-// $user->createUsersTable();
+ $user->createUsersTable();

@@ -1,45 +1,52 @@
-<div class="container mt-4">
-    <h1>All Orders</h1>
-    <table class="table">
-        <thead>
-            <tr>
-                <th class='text-center' >ID</th>
-                <th class='text-center' >Date</th>
-                <th class='text-center' >User</th>
-                <th class='text-center' >Room</th>
-                <th class='text-center' >Total Price</th>
-                <th class='text-center' >Status</th>
-                <th class='text-center' >Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($orders as $order) : ?>
+<?php if (count($orders) == 0): ?>
+    <h3 class="text-center mt-5">There are no orders yet!</h3>
+<?php else: ?>
+    <div class="container mt-4">
+        <h1 class="text-center mb-5">Orders</h1>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td class='text-center'><?php echo $order['id']; ?></td>
-                    <td class='text-center'><?php echo $order['created_date']; ?></td>
-                    <td class='text-center'><?php echo $order['user_email']; ?></td>
-                    <td class='text-center'><?php echo $order['room']; ?></td>
-                    <td class='text-center'><?php echo $order['total_price']; ?></td>
-                    <td class='text-center'><?php echo $order['status']; ?></td>
-                    <td class='text-center'>
-                        <a rel="tooltip" class="btn btn-info btn-just-icon btn-sm" data-original-title="" title="" href="#">
-                            <i class="material-icons">visibility</i>
-                        </a>
-
-                        <?php if ($order['status'] == 'Processing') : ?>
-                            <a rel='tooltip' class='btn btn-success btn-just-icon btn-sm' data-original-title='' title='' href='?view=admin-orders&action=edit&order_id=<?php echo $order["id"]; ?>&status=Done'>
-                            <i class='material-icons'>done</i>
-                            </a>
-                            <a rel='tooltip' class='btn btn-dark btn-just-icon btn-sm' data-original-title='' title='' href='?view=admin-orders&action=edit&order_id=<?php echo $order["id"]; ?>&status=Out for delivery'>
-                            <i class='material-icons'>local_shipping</i>
-                            </a>
-                        <?php endif; ?>
-                    </td>
+                    <th class='text-center'>ID</th>
+                    <th class='text-center'>Date</th>
+                    <th class='text-center'>User</th>
+                    <th class='text-center'>Room</th>
+                    <th class='text-center'>Total Price</th>
+                    <th class='text-center'>Status</th>
+                    <th class='text-center'>Action</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                <?php foreach ($orders as $order) : ?>
+                    <tr>
+                        <td class='text-center'><?php echo $order['id']; ?></td>
+                        <td class='text-center'><?php echo $order['created_date']; ?></td>
+                        <td class='text-center'><?php echo $order['user_email']; ?></td>
+                        <td class='text-center'><?php echo $order['room']; ?></td>
+                        <td class='text-center'><?php echo $order['total_price']; ?></td>
+                        <td class='text-center'><?php echo $order['status']; ?></td>
+                        <td class='text-center'>
+                            <a rel="tooltip" class="btn btn-info btn-just-icon btn-sm" data-original-title="" title="" href="?view=admin-orders&action=details&order_id=<?= $order['id'] ?>">
+                                <i class="material-icons">visibility</i>
+                            </a>
+
+                            <?php if ($order['status'] == 'Processing') : ?>
+                                <a rel='tooltip' class='btn btn-danger btn-just-icon btn-sm' data-original-title='' title='' href='?view=admin-orders&action=delete&order_id=<?php echo $order["id"]; ?>'>
+                                    <i class='material-icons'>cancel</i>
+                                </a>
+                                <a rel='tooltip' class='btn btn-success btn-just-icon btn-sm' data-original-title='' title='' href="?view=admin-orders&action=edit&order_id=<?= $order['id'] ?>&status=Done">
+                                    <i class='material-icons'>done</i>
+                                </a>
+                                <a rel='tooltip' class='btn btn-dark btn-just-icon btn-sm' data-original-title='' title='' href='?view=admin-orders&action=edit&order_id=<?php echo $order["id"]; ?>&status=Out for delivery'>
+                                    <i class='material-icons'>local_shipping</i>
+                                </a>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+<?php endif; ?>
 
 <style>
     small {

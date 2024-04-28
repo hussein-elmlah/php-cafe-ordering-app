@@ -197,8 +197,7 @@ class Database {
         }
 
         try {
-            $st=$statement->execute();
-            var_dump($st);
+            $statement->execute();
             return true;
         } catch (PDOException $e) {
             echo "Error updating record: " . $e->getMessage();

@@ -44,7 +44,7 @@ class UserOrdersController
             echo "<p class='text-danger'>failed to request order</p>";
         }
     }
-    function edit_order($order_id,$new_status)
+   /*  function edit_order($order_id,$new_status)
     {
             $db = Database::getInstance();
             $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
@@ -55,7 +55,7 @@ class UserOrdersController
             } else {
                 echo "<p class='text-danger'> Faild to update </p>";
             }
-        }
+        } */
     function cancel_order()
     {
         session_start();

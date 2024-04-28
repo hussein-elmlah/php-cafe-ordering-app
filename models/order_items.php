@@ -24,7 +24,7 @@ class OrderItem{
                 ON DELETE CASCADE,
                 CONSTRAINT fk_product
                 FOREIGN KEY (product_id)
-                REFERENCES products(product_id)
+                REFERENCES products(id)
                 ON DELETE CASCADE
             )";
 
