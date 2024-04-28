@@ -67,7 +67,7 @@ class CategoryController {
     // Temporary placeholder values
     $isLoggedIn = true;
     $loggedUser = array(
-        'isAdmin' => true,
+        'isAdmin' => false,
         'first_name' => 'Hussein'
     );
 
