@@ -3,10 +3,12 @@
 require_once 'db/db_class.php'; 
 require_once 'models/ProductModel.php';
 include 'includes/pagination.php';
+require_once 'utilities/uploadImage.php';
 
 // Initialize variables to hold form data and error messages
 $name = $error = '';
 $success_message = '';
+
 class ProductController {
     private $db;
 
@@ -31,14 +33,11 @@ class ProductController {
         return $this->db->paramsQuery($base_query, $params, $search_fields);
     }
 
-    
-
     // Method to fetch all categories
     public function getAllCategories() {
         try {
-           
             $sql = "SELECT * FROM categories"; // Assuming you have a table named 'categories'
-            $stmt =  $this->db->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $categories;
@@ -47,79 +46,99 @@ class ProductController {
         }
     }
 
-    // Method to add a product
-    public function addProduct($name,$image, $description, $price, $category_id) {
-        try {
-            // Check if the product with the same name already exists
-           
-            $checkSql = "SELECT COUNT(*) FROM products WHERE name = :name";
-            $checkStmt =  $this->db->prepare($checkSql);
-            $checkStmt->bindParam(':name', $name);
-            $checkStmt->execute();
-            $count = $checkStmt->fetchColumn();
-    
-            if ($count > 0) {
-                // Product with the same name already exists, return false
-                return false;
-            }
-    
-            // Insert the new product
-            $sql = "INSERT INTO products (name, description, price, category_id) VALUES (:name, :description, :price, :category_id)";
-            $stmt =  $this->db->prepare($sql);
-            $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':description', $description);
-            $stmt->bindParam(':price', $price);
-            $stmt->bindParam(':category_id', $category_id);
-            $result = $stmt->execute();
-            return $result; // Return true on success, false on failure
-        } catch (PDOException $e) {
-            return false; // Return false on failure
+   // Method to add a product
+public function addProduct($name, $image, $description, $price, $category_id) {
+    try {
+        // Check if the product with the same name already exists
+        $checkSql = "SELECT COUNT(*) FROM products WHERE name = :name";
+        $checkStmt =  $this->db->prepare($checkSql);
+        $checkStmt->bindParam(':name', $name);
+        $checkStmt->execute();
+        $count = $checkStmt->fetchColumn();
+
+        if ($count > 0) {
+            // Product with the same name already exists, return false
+            return false;
         }
+
+        // Insert the new product
+        $sql = "INSERT INTO products (name, image, description, price, category_id) VALUES (:name, :image, :description, :price, :category_id)";
+        $stmt =  $this->db->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':category_id', $category_id);
+        $result = $stmt->execute();
+        return $result; // Return true on success, false on failure
+    } catch (PDOException $e) {
+        return false; // Return false on failure
     }
+}
+
 }
 
 // Create an instance of the ProductController class
 $productController = new ProductController();
 
-//upload images
+// Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["name"])) {
+    // Check if all required form fields are set
+    if (isset($_POST["name"], $_POST["description"], $_POST["price"], $_POST["category"], $_FILES["image"])) {
         $name = $_POST["name"];
-        $data = ['lastImage' => ''];
-        $imageUploadResult = uploadImage($_FILES, $data);
-        $image_path = $imageUploadResult['data']['image'];
-        
-        $result = $productController->addProduct($name,$image, $description, $price, $category_id);
-        if ($result) {
-            echo json_encode(array('status' => 'success'));
+        $description = $_POST["description"];
+        $price = $_POST["price"];
+        $category_id = $_POST["category"];
+
+        // Handle image upload
+        $image_path = ''; // Initialize image path
+        $imageUploadResult = uploadImage($_FILES, []);
+        if (isset($imageUploadResult['data']['image'])) {
+            $image_path = $imageUploadResult['data']['image']; // Get uploaded image path
         } else {
-            echo json_encode(array('status' => 'error', 'message' => 'Failed to add category'));
+            // Image upload failed
+            echo json_encode(array('status' => 'error', 'message' => $imageUploadResult['errors']['image']));
+            exit; // Stop further execution
         }
+
+        // Add product to the database
+        $result = $productController->addProduct($name, $image_path, $description, $price, $category_id);
+        if ($result) {
+            // Product added successfully
+            $success_message = 'Product added successfully.';
+        } else {
+            // Product with the same name already exists
+            $error = 'A product with the same name already exists.';
+        }
+
+    } else {
+        // Required form fields are missing
+        $error = 'Required form fields are missing.';
     }
 }
+
 // Fetch categories data
 $categories = $productController->getAllCategories();
 
 // Fetch products data
 $result = $productController->getAllProducts();
 
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if user is logged in and is admin
-    if ($loggedUser['isAdmin']) {
-        // Retrieve form data and process product addition
-        // (Code for processing product addition remains the same as in your original code)
-    } else {
-        // User is not an admin
-        $error = "You do not have permission to perform this action.";
-    }
-}
-
 // Fetch all products to display
 $products = isset($result['data']) ? $result['data'] : [];
 $current_page = isset($result['current_page']) ? $result['current_page'] : 1;
 $total_pages = isset($result['total_pages']) ? $result['total_pages'] : 1;
 
+
+
+    // Temporary placeholder values
+    $isLoggedIn = true;
+    $loggedUser = array(
+        'isAdmin' => false,
+        'first_name' => 'Hussein'
+    );
+    if ($isLoggedIn && $loggedUser['isAdmin']) {
+        echo "Products table created successfully.";
+    }
 // Include the view file
 include 'views/admin/add_product.php';
 Pagination($current_page, $total_pages);

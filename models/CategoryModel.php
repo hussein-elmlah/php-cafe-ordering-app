@@ -20,7 +20,15 @@ class Category {
                       )";
 
             $this->db->customQuery($query);
-            echo "Categories table created successfully.";
+              // Temporary placeholder values
+              $isLoggedIn = true;
+              $loggedUser = array(
+                  'isAdmin' => false,
+                  'first_name' => 'Hussein'
+              );
+          if ($isLoggedIn && $loggedUser['isAdmin']) {
+             echo "Categories table created successfully.";
+          }
         } catch (PDOException $e) {
             // Log the error or provide meaningful feedback to the user
             echo "Error creating categories table: " . $e->getMessage();
