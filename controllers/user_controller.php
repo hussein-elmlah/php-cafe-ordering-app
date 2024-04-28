@@ -26,20 +26,26 @@ class UserController
             $_SESSION['is_auth'] = true;
             $_SESSION['is_admin'] = $loggedInUserData[0]['is_admin'];
             $_SESSION['user_name'] = $loggedInUserData[0]['name'];
-            echo '<script> 
-            window.location.href = window.location.pathname + "?view=admin-users";
-            </script>';
-        }else{
+            if ($loggedInUserData[0]['is_admin'] === 1) {
+                echo '<script> 
+                window.location.href = window.location.pathname + "?view=admin-users";
+                </script>';
+            } else {
+                $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+                $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
+                echo "<script>window.location.href = '$url';</script>";
+            }
+        } else {
             $_SESSION['is_auth'] = false;
             $_SESSION['error'] = "Bad Credentials";
             echo '<script> 
             window.location.href = window.location.pathname + "?view=login";
             </script>';
         }
-
     }
 
-    public function viewLoginForm(){
+    public function viewLoginForm()
+    {
         include 'views/user/user_login_view.php';
     }
 }
@@ -51,7 +57,7 @@ $data = isset($_GET['data']) ? $_GET['data'] : null;
 $user = new UserController();
 
 switch ($action) {
-   
+
     case 'validate':
         $user->loginUser();
         break;

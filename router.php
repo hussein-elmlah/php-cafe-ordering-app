@@ -24,13 +24,16 @@ switch ($requestView) {
         include 'controllers/user_controller.php';
         break;
     case 'admin-users':
-        // if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        // include 'views/admin/admin_users_view.php';
-        include 'controllers/admin_users_controller.php';
+        if (!$isAdmin) {     // admin guard
+            $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+            $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
+            echo "<script>window.location.href = '$url';</script>";
+            break;
+        }else{
+            include 'controllers/admin_users_controller.php';
+        }
         break;
     default:
         include 'views/404.php';
         break;
 }
-
-?>
