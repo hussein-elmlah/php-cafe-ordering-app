@@ -21,7 +21,7 @@ class AdminOrdersController
 
         $params = [
             'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 5,
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
@@ -39,19 +39,51 @@ class AdminOrdersController
 
         Pagination($current_page, $total_pages);
     }
+    public function displayAdminOrderDetails()
+    {
+
+        $current_page = 1;
+        $total_pages = 3;
+
+        $db = Database::getInstance();
+        $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+        $base_query = "SELECT * FROM order_items WHERE id = '{$_GET['id']}'";
+
+        $params = [
+            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 5,
+            'order' => isset($_GET['order']) ? $_GET['order'] : null,
+            'search' => isset($_GET['search']) ? $_GET['search'] : null,
+        ];
+
+        // var_dump( $params);
+
+        $search_fields = ['name', 'name'];
+
+        $result = $db->paramsQuery($base_query, $params, $search_fields);
+        $items = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
+
+        include './views/admin/orders/display_order_details_view.php';
+
+        Pagination($current_page, $total_pages);
+    }
     public function editOrederStatus($order_id, $new_status)
     {
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        $fields = "`status` = :new_status";
+        $fields = "status = '$new_status'"; 
         $query = $db->update('orders',$order_id,$fields);
-        if($query === false) {
-            include 'all_orders_view.php';
+        if($query !== false) {
+            include './views/admin/orders/edit_order_view.php';
         } else {
             echo "<p class='text-danger'> Faild to update </p>";
         }
     }
 }
+
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
 
@@ -60,12 +92,19 @@ $admin_orders = new AdminOrdersController();
 switch ($action) {
     case 'edit':
         if ($order_id) {
-            $order_status = isset($_GET['status']) ? $_GET['status'] :'';
+            $new_status = isset($_GET['status']) ? $_GET['status'] :'';
             $admin_orders->editOrederStatus($order_id,$new_status);
         } else {
             echo 'Invalid order ID';
         }
         break;
+        case 'details':
+            if ($order_id) {
+                $admin_orders->editOrederStatus($order_id,$new_status);
+            } else {
+                echo 'Invalid order ID';
+            }
+            break;
     default:
         $admin_orders->displayAdminOrders();
         break;
