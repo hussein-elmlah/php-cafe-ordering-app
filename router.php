@@ -1,6 +1,6 @@
 <?php
 
-require_once "utilities/redirectToView.php";
+// require_once "utilities/redirectToView.php";
 
 $requestView = $_GET['view'] ?? '';
 
@@ -12,26 +12,24 @@ $loggedUser = array(
 
 switch ($requestView) {
     case 'null':
-        // Include admin-home controller here
-        redirectToView('admin-users'); // delete later
-        break;
     case '':
-        // Include admin-home controller here
-        break;
     case '/':
-        // Include admin-home controller here
-        break;
     case '#':
-        // Include admin-home controller here
-        redirectToView('admin-users'); // delete later
+    case 'admin-home':
+        // admin guard
+        if (!$loggedUser['isAdmin']) {
+            break;
+        };
+        include 'controllers/admin_home_controller.php';
         break;
     case 'admin-users':
-        if (!$loggedUser['isAdmin']){ break; }; // admin guard
+        // admin guard
+        if (!$loggedUser['isAdmin']) {
+            break;
+        };
         include 'controllers/admin_users_controller.php';
         break;
     default:
         include 'views/404.php';
         break;
 }
-
-?>
