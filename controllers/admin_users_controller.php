@@ -32,7 +32,7 @@ class AdminUserController
             $isImage->check($profile);
 
             $_POST['profile'] = file_get_contents($profile);
-            $this->db->insert(
+            $this->db->insert_with_data(
                 "users",
                 "name,email,password,room,ext,profile",
                 ":name,:email,:password,:room,:ext,:profile",

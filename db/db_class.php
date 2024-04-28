@@ -127,7 +127,7 @@ class Database {
             }
     }
 
-    public function insert($table, $columns, $values, $data) {
+    public function insert_with_data($table, $columns, $values, $data) {
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
         $statement = $this->connection->prepare($query);
 
@@ -138,6 +138,19 @@ class Database {
             $statement->bindParam("$values[$i]", $data[$columns[$i]]);
         }
 
+        try {
+            $statement->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo "Error inserting record: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function insert($table, $columns, $values) {
+        $query = "INSERT INTO $table ($columns) VALUES ($values)";
+        $statement = $this->connection->prepare($query);
+        
         try {
             $statement->execute();
             return true;
