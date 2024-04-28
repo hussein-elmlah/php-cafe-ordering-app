@@ -1,5 +1,12 @@
 <?php
 
+use Respect\Validation\Validator as DataValidation;
+use Respect\Validation\Exceptions\ValidationException;
+require_once 'vendor/autoload.php';
+require_once 'config/db_info.php';
+require_once 'db/db_class.php';
+include 'includes/pagination.php';
+require_once "utilities/redirectToView.php";
 
 if (session_status() == PHP_SESSION_NONE) {
 	session_start();

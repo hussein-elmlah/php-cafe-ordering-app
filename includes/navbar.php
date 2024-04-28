@@ -1,7 +1,5 @@
 <?php
 
-require_once "utilities/redirectToView.php";
-
 $isLoggedIn = @$_SESSION['is_auth'];
 $isAdmin = @$_SESSION['is_admin'];
 $userName = @$_SESSION['user_name'];
@@ -55,7 +53,7 @@ $userName = @$_SESSION['user_name'];
                 <?php endif; ?>
                 <?php if (!$isLoggedIn) : ?>
                     <a href="login" class="btn btn-outline-light me-2">Login</a>
-                    <a href="register" class="btn btn-outline-light">Register</a>
+                    <a href="register&action=register" class="btn btn-outline-light">Register</a>
                 <?php endif; ?>
                 <?php if ($isLoggedIn) : ?>
                     <div class="dropdown">

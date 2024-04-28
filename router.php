@@ -1,7 +1,5 @@
 <?php
 
-require_once "utilities/redirectToView.php";
-
 $requestView = $_GET['view'] ?? '';
 
 switch ($requestView) {
@@ -9,8 +7,8 @@ switch ($requestView) {
         // Include admin-home controller here
         redirectToView('admin-users'); // delete later
         break;
-    case '':
-        // Include admin-home controller here
+    case 'register':
+        include 'controllers/user_controller.php';
         break;
     case 'logout':
         if (session_status() != PHP_SESSION_NONE) {

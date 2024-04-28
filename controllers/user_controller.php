@@ -1,8 +1,5 @@
 <?php
 
-require_once 'config/db_info.php';
-require_once 'db/db_class.php';
-
 class UserController
 {
     private $db;
@@ -48,6 +45,44 @@ class UserController
     {
         include 'views/user/user_login_view.php';
     }
+
+    public function viewRegisterForm()
+    {
+        $roomQuery = "SELECT * FROM rooms";
+        $rooms = $this->db->customQuery($roomQuery);
+        include 'views/user/user_register_view.php';
+    }
+
+    public function register()
+    {
+
+        $profile = $_FILES['profile']['tmp_name'];
+        $isEmail = DataValidation::email();
+        $isImage = DataValidation::image();
+
+        try {
+            DataValidation::stringType()->length(8, null)->check($_POST['password']);
+            DataValidation::stringType()->length(8, null)->check($_POST['password_confirmation']);
+            DataValidation::keyValue('password_confirmation', 'equals', 'password')->check($_POST);
+            $isEmail->check($_POST['email']);
+            $isImage->check($profile);
+
+            $_POST['profile'] = file_get_contents($profile);
+            $this->db->insert_with_data(
+                "users",
+                "name,email,password,room,ext,profile",
+                ":name,:email,:password,:room,:ext,:profile",
+                $_POST
+            );
+            $_SESSION['msg'] = "User is added successfully";
+        } catch (ValidationException $exception) {
+            $_SESSION['error'] = $exception->getMessage();
+        }
+        echo '<script> 
+                window.location.href = window.location.pathname + "?view=admin-users";
+              </script>';
+    }
+
 }
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -61,6 +96,15 @@ switch ($action) {
     case 'validate':
         $user->loginUser();
         break;
+    
+    case 'register':
+        $user->viewRegisterForm();
+        break;
+
+    case 'store':
+        $user->register();
+        break;
+
     default:
         $user->viewLoginForm();
         break;
