@@ -131,11 +131,12 @@ $total_pages = isset($result['total_pages']) ? $result['total_pages'] : 1;
 
 
     // Temporary placeholder values
-    $isLoggedIn = true;
+    $isLoggedIn = @$_SESSION['is_auth'];
     $loggedUser = array(
-        'isAdmin' => false,
-        'first_name' => 'Hussein'
+        'isAdmin' => @$_SESSION['is_admin'],
+        'first_name' => @$_SESSION['user_name']
     );
+
     if ($isLoggedIn && $loggedUser['isAdmin']) {
         echo "Products table created successfully.";
     }
