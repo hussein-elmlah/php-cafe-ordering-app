@@ -1,5 +1,9 @@
 <?php
 
+require_once 'vendor/autoload.php';
+use Respect\Validation\Validator as DataValidation;
+use Respect\Validation\Exceptions\ValidationException;
+
 class AdminUserController
 {
     private $db;

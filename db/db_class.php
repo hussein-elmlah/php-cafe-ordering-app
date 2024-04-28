@@ -127,7 +127,7 @@ class Database {
             }
     }
 
-    public function insert($table, $columns, $values, $data) {
+    public function insert_with_data($table, $columns, $values, $data) {
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
         $statement = $this->connection->prepare($query);
 

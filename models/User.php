@@ -3,19 +3,13 @@
 require_once 'db/db_class.php';
 require_once 'config/db_info.php';
 
-class User {
+class User
+{
 
-    // TODO: handle database connection using already prepared db_class
     private $db;
 
-    public $name;
-    public $email;
-    public $password;
-    public $room;
-    public $ext;
-    public $profile;
-
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getInstance();
         $this->db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     }
@@ -25,23 +19,25 @@ class User {
 
         try {
             $query = "CREATE TABLE IF NOT EXISTS users (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                email VARCHAR(255) NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                is_admin BOOLEAN NOT NULL,
-                image VARCHAR(255) NOT NULL
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `name` varchar(40) NOT NULL,
+                    `email` varchar(40) NOT NULL,
+                    `password` varchar(50) NOT NULL,
+                    `room` int(11) NOT NULL,
+                    `ext` varchar(20) NOT NULL,
+                    `profile` longblob NOT NULL,
+                    `is_admin` tinyint(1) NOT NULL,
+                    PRIMARY KEY (`id`)
+                    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci
             )";
 
-        $this->db->customQuery($query);
-
+            $this->db->customQuery($query);
         } catch (PDOException $e) {
             die("Error creating users table: " . $e->getMessage());
         }
     }
-
 }
 
-// $user = new User();
+$user = new User();
 
-// $user->createUsersTable();
+$user->createUsersTable();

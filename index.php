@@ -1,8 +1,5 @@
 <?php
 
-use Respect\Validation\Validator as DataValidation;
-use Respect\Validation\Exceptions\ValidationException;
-require_once 'vendor/autoload.php';
 require_once 'config/db_info.php';
 require_once 'db/db_class.php';
 include 'includes/pagination.php';

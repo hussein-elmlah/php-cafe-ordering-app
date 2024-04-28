@@ -7,6 +7,18 @@
 </head>
 <body class="bg-black min-vh-100 ">
 
+    <?php
+
+    // assuming this is the home page.
+    if (isset($_SESSION['msg'])) {
+        echo '<div class="alert alert-success" role="alert" id="success_message">' .
+            $_SESSION['msg']
+            . '</div>';
+    }
+
+    unset($_SESSION['msg']);
+    
+    ?>
 
 
     <div class="p-5 row justify-content-center text-center">

@@ -1,5 +1,9 @@
 <?php
 
+require_once 'vendor/autoload.php';
+use Respect\Validation\Validator as DataValidation;
+use Respect\Validation\Exceptions\ValidationException;
+
 class UserController
 {
     private $db;
@@ -74,13 +78,18 @@ class UserController
                 ":name,:email,:password,:room,:ext,:profile",
                 $_POST
             );
-            $_SESSION['msg'] = "User is added successfully";
+            $_SESSION['msg'] = "Your account is saved successfully";
+             echo '<script> 
+                window.location.href = window.location.pathname;
+              </script>';
         } catch (ValidationException $exception) {
             $_SESSION['error'] = $exception->getMessage();
-        }
-        echo '<script> 
-                window.location.href = window.location.pathname + "?view=admin-users";
+             echo '<script> 
+                window.location.href = window.location.pathname + "?view=register&action=register";
               </script>';
+        }
+
+       
     }
 
 }
