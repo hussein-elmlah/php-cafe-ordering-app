@@ -3,7 +3,11 @@
 // require_once "utilities/redirectToView.php";
 
 $requestView = $_GET['view'] ?? '';
-
+// $isLoggedIn = @$_SESSION['is_auth'];
+//     $loggedUser = array(
+//         'isAdmin' => @$_SESSION['is_admin'],
+//         'first_name' => @$_SESSION['user_name']
+//     );
 switch ($requestView) {
     case 'logout':
         if (session_status() != PHP_SESSION_NONE) {

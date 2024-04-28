@@ -4,7 +4,7 @@ require_once './db/db_class.php';
 require_once 'config/db_info.php';
 require_once 'db/db_class.php';
 
-session_start();
+// session_start();
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
 }
