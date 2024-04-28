@@ -1,7 +1,5 @@
 <?php
 
-// require_once 'config/db_info.php';
-
 class Database {
 
     private static $instance;
@@ -49,7 +47,6 @@ class Database {
             die('Database connection failed: ' . $e->getMessage());
         }
     }
-    
 
     public function customQuery($query) {
         try {
@@ -205,10 +202,6 @@ class Database {
     }
 
 }
-
-// $database = Database::getInstance();
-
-// $database->connect(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 
 ?>
 

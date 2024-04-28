@@ -1,14 +1,11 @@
-<?php 
+<?php
 
-    require_once "utilities/redirectToView.php";
+require_once "utilities/redirectToView.php";
 
-    // Temporary placeholder values
-    $isLoggedIn = true;
-    $loggedUser = array(
-        'isAdmin' => true,
-        'first_name' => 'Hussein'
-    );
-    
+$isLoggedIn = @$_SESSION['is_auth'];
+$isAdmin = @$_SESSION['is_admin'];
+$userName = @$_SESSION['user_name'];
+
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -19,9 +16,10 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+        
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <?php if (!$loggedUser['isAdmin'] || !$isLoggedIn): ?>
+                <?php if (!$isAdmin || !$isLoggedIn) : ?>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Home</a>
                     </li>
@@ -35,7 +33,7 @@
                         <a class="nav-link" href="shoppingCart">Cart</a>
                     </li>
                 <?php endif; ?>
-                <?php if ($loggedUser['isAdmin']): ?>
+                <?php if ($isAdmin && $isLoggedIn) : ?>
                     <li class="nav-item">
                         <a class="nav-link" href="admin-categories">Categories</a>
                     </li>
@@ -47,27 +45,29 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="admin-users">Users</a>
-                        
+
                     </li>
                 <?php endif; ?>
             </ul>
             <div class="d-flex">
-                <?php if (!$loggedUser['isAdmin'] || !$isLoggedIn): ?>
+                <?php if (!$isAdmin || !$isLoggedIn) : ?>
                     <a href="shop" class="btn btn-outline-light me-2">Shop</a>
                 <?php endif; ?>
-                <?php if (!$isLoggedIn): ?>
+                <?php if (!$isLoggedIn) : ?>
                     <a href="login" class="btn btn-outline-light me-2">Login</a>
                     <a href="register" class="btn btn-outline-light">Register</a>
                 <?php endif; ?>
-                <?php if ($isLoggedIn): ?>
+                <?php if ($isLoggedIn) : ?>
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?= $loggedUser['first_name'] ?>
+                            <?= $userName ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="userprofile">Profile</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="log" onclick="handleLogout()">Logout</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="logout" onclick="handleLogout()">Logout</a></li>
                         </ul>
                     </div>
                 <?php endif; ?>
@@ -78,10 +78,9 @@
 
 
 <script>
-
     function redirectToLink(event) {
         event.preventDefault();
-        var baseHref = window.location.pathname;    // "http://localhost/cafe"
+        var baseHref = window.location.pathname; // "http://localhost/cafe"
         var view = event.target.getAttribute('href');
         window.location.href = baseHref + "?" + "view=" + view;
     }
@@ -95,8 +94,7 @@
 
     document.addEventListener('DOMContentLoaded', addClickEventToNavbarLinks);
 
-    function handleLogout(){
+    function handleLogout() {
         window.location.href = "logout";
     }
 </script>
-

@@ -1,25 +1,12 @@
 <?php
-session_start();
-// include (realpath(dirname(__FILE__)."config/db_info.php"));
-require_once 'vendor/autoload.php';
+
 use Respect\Validation\Validator as DataValidation;
 use Respect\Validation\Exceptions\ValidationException;
+require_once 'vendor/autoload.php';
 require_once 'config/db_info.php';
 require_once 'db/db_class.php';
-// require_once 'models/User.php';
 include 'includes/pagination.php';
-
-// class AdminUser {
-//     public $id;
-//     public $name;
-//     public $email;
-
-//     public function __construct($id, $name, $email) {
-//         $this->id = $id;
-//         $this->name = $name;
-//         $this->email = $email;
-//     }
-// }
+// require_once 'models/User.php';
 
 class AdminUserController
 {
