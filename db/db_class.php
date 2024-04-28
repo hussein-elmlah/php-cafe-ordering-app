@@ -1,7 +1,5 @@
 <?php
 
-require_once './config/db_info.php';
-
 class Database {
 
     private static $instance;
@@ -12,6 +10,10 @@ class Database {
 
     }
 
+    public function prepare($query) {
+        return $this->connection->prepare($query);
+    }
+
     public static function getInstance() 
     {
         if (!self::$instance) {
@@ -20,7 +22,7 @@ class Database {
         return self::$instance;
     }
 
-    public function connect($host, $username, $password, $database) 
+    public function connect($host, $username, $password, $database)
     {
         try {
             // Connect to MySQL server
@@ -49,7 +51,6 @@ class Database {
             die('Database connection failed: ' . $e->getMessage());
         }
     }
-    
 
     public function customQuery($query) {
         try {
@@ -66,7 +67,6 @@ class Database {
     public function paramsQuery($query, $params, $search_fields) {
         try {
                 $max_limit = 50;
-                // var_dump($params);
             
                 $page = isset($params['page']) ? intval($params['page']) : 1;
                 $limit = isset($params['limit']) ? intval($params['limit']) : 10;
@@ -80,20 +80,25 @@ class Database {
                 }
             
                 $filter_conditions = [];
+                
                 if ($search && $search_fields) {
                     foreach ($search_fields as $field) {
                         $filter_conditions[] = "$field LIKE '%" . $search . "%'";
                     }
                 }
+                
                 if ($search && !$search_fields) {
                     throw new Exception('Invalid search parameters');
                 }
+                
                 foreach ($filters as $key => $value) {
                     $filter_conditions[] = "$key = '$value'";
                 }
+                
                 if (!empty($filter_conditions)) {
                     $query .= " WHERE " . implode(' AND ', $filter_conditions);
                 }
+
                 if ($order_by) {
                     $query .= " ORDER BY $order_by";
                 }
@@ -109,7 +114,7 @@ class Database {
                 $query .= " LIMIT $limit OFFSET $offset";
                 
                 $statement = $this->connection->prepare($query);
-                $statement->execute();
+                $statement->execute();      
                 
                 $data = $statement->fetchAll(PDO::FETCH_ASSOC);
                 
@@ -119,16 +124,37 @@ class Database {
                     'total_records' => $totalRecords,
                     'current_page' => $page
                 ];
+
             } catch (PDOException $e) {
                 echo "Error executing custom query: " . $e->getMessage();
                 return false;
             }
     }
 
-    public function insert($table, $columns, $values) {
+    public function insert_with_data($table, $columns, $values, $data) {
         $query = "INSERT INTO $table ($columns) VALUES ($values)";
         $statement = $this->connection->prepare($query);
 
+        $values = explode(",", $values);
+        $columns = explode(",", $columns);
+        
+        for ($i=0; $i < count($values); $i++) { 
+            $statement->bindParam("$values[$i]", $data[$columns[$i]]);
+        }
+
+        try {
+            $statement->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo "Error inserting record: " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function insert($table, $columns, $values) {
+        $query = "INSERT INTO $table ($columns) VALUES ($values)";
+        $statement = $this->connection->prepare($query);
+        
         try {
             $statement->execute();
             return true;
@@ -156,10 +182,19 @@ class Database {
         }
     }
 
-    public function update($table, $id, $fields) {
+    public function update($table, $id, $fields, $keys, $values) {
         $query = "UPDATE $table SET $fields WHERE id = :id";
         $statement = $this->connection->prepare($query);
         $statement->bindParam(':id', $id, PDO::PARAM_INT);
+
+        $columns = explode(",", $keys);
+
+        for ($i=0; $i < count($columns); $i++) { 
+            if ($columns[$i] === "room") {
+                $statement->bindParam($columns[$i], $values[$i], PDO::PARAM_INT);
+            }
+            $statement->bindParam($columns[$i], $values[$i], PDO::PARAM_STR);
+        }
 
         try {
             $statement->execute();
@@ -184,9 +219,6 @@ class Database {
     }
 
 }
-
-$database = Database::getInstance();
-$database->connect(DB_HOST,DB_USER,DB_PASSWORD,DB_NAME);
 
 ?>
 

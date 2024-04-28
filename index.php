@@ -1,5 +1,10 @@
 <?php
 
+
+if (session_status() == PHP_SESSION_NONE) {
+	session_start();
+}
+
 // initialize settings to display error messages
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
