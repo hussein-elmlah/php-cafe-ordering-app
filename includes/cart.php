@@ -77,8 +77,11 @@ if (isset($_POST['change_count'])) {
     // $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     // $db->update('products', $productId, "quantity=$productQuantity");
 
-    $index = array_search($productId, array_column($_SESSION['cart'], 'id'));
+    if ($productQuantity < 1) {
+        return;
+    }
 
+    $index = array_search($productId, array_column($_SESSION['cart'], 'id'));
     if ($index !== false) {
         $_SESSION['cart'][$index]['quantity'] = $productQuantity;
     }
