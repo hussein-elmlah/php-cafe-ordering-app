@@ -1,4 +1,3 @@
-
 <div class="container mt-5">
     <?php if ($loggedUser['isAdmin']): ?>
         <h1>Add Category</h1>
@@ -23,11 +22,11 @@
         <?php if (!empty($categories)) : ?>
             <?php foreach ($categories as $category) : ?>
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card h-100"> <!-- Ensure all cards have the same height -->
                         <?php if (!empty($category['image'])) : ?>
-                            <img src="<?php echo $category['image']; ?>" class="card-img-top" alt="<?php echo $category['name']; ?>">
+                            <img src="<?php echo $category['image']; ?>" class="card-img-top img-fluid h-100" alt="<?php echo $category['name']; ?>"> <!-- Add img-fluid class for responsive images -->
                         <?php else: ?>
-                            <img src="placeholder.jpg" class="card-img-top" alt="Placeholder">
+                            <img src="placeholder.jpg" class="card-img-top img-fluid" alt="Placeholder"> <!-- Add img-fluid class for responsive images -->
                         <?php endif; ?>
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $category['name']; ?></h5>
@@ -43,5 +42,3 @@
         <?php endif; ?>
     </div>
 </div>
-
-
