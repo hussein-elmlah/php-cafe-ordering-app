@@ -65,10 +65,10 @@ class CategoryController {
 }
 
     // Temporary placeholder values
-    $isLoggedIn = true;
+    $isLoggedIn = @$_SESSION['is_auth'];
     $loggedUser = array(
-        'isAdmin' => false,
-        'first_name' => 'Hussein'
+        'isAdmin' => @$_SESSION['is_admin'],
+        'first_name' => @$_SESSION['user_name']
     );
 
     $current_page = 1;
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //     $image_path = null; // If no image was uploaded, set the image path to null
         // }
 
-        $data = ['lastImage' => ''];
+        $data = ['lastImage' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.svg.png'];
         $imageUploadResult = uploadImage($_FILES, $data);
         $old_data = $imageUploadResult['data'];
         // var_dump($imageUploadResult);
