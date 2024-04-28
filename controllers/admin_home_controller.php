@@ -78,12 +78,5 @@ class AdminHomeController
 
 $adminHomeController = new AdminHomeController();
 
-switch ($action) {
-    case "add-to-cart":
-        echo "opaaaaaaa";
-        break;
-    default:
-        $adminHomeController->showHome($adminHomeController->getProducts());
-        $adminHomeController->getProducts();
-        break;
-}
+$adminHomeController->showHome($adminHomeController->getProducts());
+$adminHomeController->getProducts();

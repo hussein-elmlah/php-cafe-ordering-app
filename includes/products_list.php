@@ -14,6 +14,25 @@
 </form>
 
 <?php if (isset($_GET['product'])) {
-    $_SESSION['cart'][] = $_GET['product'];
+    $db = Database::getInstance();
+    $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $db_products = $db->select('products');
+    $db_product = array_values(array_filter($db_products, fn($obj) => $obj['id'] == $_GET['product']));
+
+    function objectExists($array, $object) {
+        foreach ($array as $item) {
+            if ($item['id'] == $object['id']) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $drink = $db_product[0];
+    $drink['quantity'] = 1;
+
+    if (!objectExists($_SESSION['cart'], $drink)) {
+        $_SESSION['cart'][] = $drink;
+    }
 }
 ?>
