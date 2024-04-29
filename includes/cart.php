@@ -24,8 +24,10 @@ require_once "utilities/redirectToView.php";
     <?php endforeach; ?>
 </form>
 
-<label class="fs-5 mt-3" for="notes">Notes</label>
-<textarea id="notes" name="notes" rows="4" cols="50" style="resize: none;"></textarea>
+<div class="d-flex flex-column">
+    <label class="fs-5 mt-3" for="notes">Notes</label>
+    <textarea id="notes" name="notes" rows="4" cols="50" style="resize: none;"></textarea>
+</div>
 
 <span class="d-flex gap-3 mt-4">
     <label class="fs-5" for="room">Room</label>
