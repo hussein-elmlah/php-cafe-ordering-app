@@ -10,6 +10,9 @@
         <a id="checkLink" href="#" class="btn w-50 fw-bolder fs-5" style="background-color:#34bc1c; color:white; left:100%">GO</a>
     </div>
     <div class="container">
+        <?php  if(count($orders)==0):?>
+<h1 class="text-center-my-5">You don't have any orders yet!</h1>
+<?php else:?>
         <?php foreach ($orders as $order) : ?>
             <div class="card">
                 <a href="?view=user-orders&action=details&order_id=<?php echo $order['id'].'&total_price='.$order['total_price'];?>">
@@ -23,12 +26,13 @@
                     <h2 class="card-title">Amount : <span class="fs-5"><?php echo $order['total_price']; ?> EGP</span></h2>
                 </div>
                 <?php if ($order['status'] == "Processing") : ?>
-                    <a class=" card-price btn w-25 fs-5 text-center mb-0 " href="#!" style="text-decoration:none; margin-top:15px;background-color:#970C0A;color: #fff;">Cancel</a>
+                    <a class=" card-price btn w-25 fs-5 text-center mb-0 " href='user-orders&action=delete&order_id=<?php echo $order["id"]; ?>' style="text-decoration:none; margin-top:15px;background-color:#970C0A;color: #fff;">Cancel</a>
                     <!--  <div class="card-price"><?php echo $order['total_price'] ?> EGP</div> -->
                 <?php endif; ?>
 
             </div>
         <?php endforeach; ?>
+        <?php endif; ?>
     </div>
 
     <style>
@@ -172,7 +176,7 @@
         const checkLink = document.getElementById('checkLink');
 
         function constructUrl() {
-            let url = '?view=admin-checks';
+            let url = 'user-orders&action=date';
             const dateFromValue = dateFromInput.value;
             const dateToValue = dateToInput.value;
 

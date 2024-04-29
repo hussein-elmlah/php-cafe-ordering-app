@@ -56,7 +56,7 @@ class UserOrdersController
     {
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : 'john@example.com';
+        $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
         $current_page = 1;
         $total_pages = 2;
 
@@ -115,6 +115,59 @@ class UserOrdersController
         $query = "SELECT * FROM products WHERE id = '$product_id' ";
         return $db->customQuery($query);
     }
+
+    function get_orders_by_date()
+    {
+        $db = Database::getInstance();
+        $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        if (isset($_GET['user_email'])) {
+            $user_email = $_GET['user_email'];
+            if (isset($_GET['date_to']) && isset($_GET['date_from'])) {
+                $date_to = $_GET['date_to'];
+                $date_from = $_GET['date_from'];
+                $base_query = "SELECT * FROM orders WHERE created_date BETWEEN '$date_from' AND '$date_to' AND user_email = '$user_email'";
+            } elseif (isset($_GET['date_from'])) {
+                $date_from = $_GET['date_from'];
+                $base_query = "SELECT * FROM orders where created_date > '$date_from' AND user_email = '$user_email' ";
+            } elseif (isset($_GET['date_to'])) {
+                $date_to = $_GET['date_to'];
+                $base_query = "SELECT * FROM orders where created_date < '$date_to' AND user_email = '$user_email' ";
+            } else {
+                $base_query = "SELECT * FROM orders where user_email = '$user_email'";
+            }
+        } elseif (isset($_GET['date_to']) && isset($_GET['date_from'])) {
+            $date_to = $_GET['date_to'];
+            $date_from = $_GET['date_from'];
+            $base_query = "SELECT * FROM orders WHERE created_date BETWEEN '$date_from' AND '$date_to' ";
+        } elseif (isset($_GET['date_from'])) {
+            $date_from = $_GET['date_from'];
+            $base_query = "SELECT * FROM orders where created_date > '$date_from'";
+        } elseif (isset($_GET['date_to'])) {
+            $date_to = $_GET['date_to'];
+            $base_query = "SELECT * FROM orders where created_date < '$date_to' ";
+        } else {
+            $base_query = "SELECT * FROM orders";
+        }
+
+        $params = [
+            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
+            'order' => isset($_GET['order']) ? $_GET['order'] : null,
+            'search' => isset($_GET['search']) ? $_GET['search'] : null,
+        ];
+
+        // var_dump( $params);
+
+        $search_fields = ['user_email'];
+
+        $result = $db->paramsQuery($base_query, $params, $search_fields);
+
+        $orders = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
+        include './views/user/orders/display_orders_view.php';
+        Pagination($current_page, $total_pages);
+    }
 }
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -137,6 +190,9 @@ switch ($action) {
             echo 'Invalid order ID';
         }
         break;
+        case 'date':
+                $UserOrders->get_orders_by_date();
+            break;
     default:
         $UserOrders->get_orders();
         break;
