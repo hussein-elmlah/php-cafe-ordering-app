@@ -1,45 +1,10 @@
 <?php
 
-require_once './db/db_class.php';
 require_once 'config/db_info.php';
 require_once 'db/db_class.php';
 
-// session_start();
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
-}
-
-class Admin
-{
-    public $id;
-    public $name;
-    public $email;
-
-    public function __construct($id, $name, $email)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-    }
-}
-
-class Product
-{
-    public $name;
-    public $quantity;
-    public $price;
-
-    public function __construct($name, $quantity, $price)
-    {
-        $this->name = $name;
-        $this->quantity = $quantity;
-        $this->price = $price;
-    }
-
-    public function getTotalPrice()
-    {
-        return $this->quantity * $this->price;
-    }
 }
 
 class AdminHomeController
@@ -58,8 +23,6 @@ class AdminHomeController
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
 
-        // $search_fields = ['name', 'name'];
-
         $result = $db->paramsQuery($base_query, $params, null);
         $products = $result['data'];
         return $products;
@@ -69,14 +32,52 @@ class AdminHomeController
     {
         include 'views/admin/admin_home_view.php';
     }
+}
 
-    public function deleteAdmin($userId)
+if (isset($_GET['product'])) {
+    $db = Database::getInstance();
+    $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $db_products = $db->select('products');
+    $db_product = array_values(array_filter($db_products, fn ($obj) => $obj['id'] == $_GET['product']));
+
+    function objectExists($array, $object)
     {
-        include 'delete_admin_user_confirmation_view.php';
+        foreach ($array as $item) {
+            if ($item['id'] == $object['id']) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    $drink = $db_product[0];
+    $drink['quantity'] = 1;
+
+    if (!objectExists($_SESSION['cart'], $drink)) {
+        $_SESSION['cart'][] = $drink;
+    }
+}
+
+if (isset($_POST['remove_product'])) {
+    $productId = $_POST['remove_product'];
+    $db_products = array_values(array_filter($_SESSION['cart'], fn ($obj) => $obj['id'] != $productId));
+    $_SESSION['cart'] = $db_products;
+}
+
+if (isset($_POST['change_count'])) {
+    $data = $_POST['change_count'];
+    $data = explode(" ", $data);
+
+    $productId = $data[0];
+    $productQuantity = $data[1];
+
+    if ($productQuantity >= 1) {
+        $index = array_search($productId, array_column($_SESSION['cart'], 'id'));
+        if ($index !== false) {
+            $_SESSION['cart'][$index]['quantity'] = $productQuantity;
+        }
     }
 }
 
 $adminHomeController = new AdminHomeController();
-
 $adminHomeController->showHome($adminHomeController->getProducts());
-$adminHomeController->getProducts();
