@@ -36,7 +36,7 @@ class ChecksController
 
         $params = [
             'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 5,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
@@ -91,7 +91,7 @@ class ChecksController
 
         $params = [
             'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 5,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];

@@ -1,21 +1,31 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-around">
-        <div class="mb-5">
-            <label>From: </label>
-            <input type="date" id="date_from" name="date_from">
+    <div >
+    <input
+      placeholder="Date From"
+      class="textbox-n w-100"
+      type="text"
+      onfocus="(this.type='date')"
+      onblur="(this.type='text')"
+      id="date_from" />
         </div>
-        <div class="mb-5">
-            <label>To: </label>
-            <input type="date" id="date_to" name="date_to">
+        <div >
+        <input
+      placeholder="Date To"
+      class="textbox-n w-100"
+      type="text"
+      onfocus="(this.type='date')"
+      onblur="(this.type='text')"
+      id="date_from" />
         </div>
     </div>
-    <a id="checkLink" href="#" class="btn btn-success w-25">Check</a>
-    <div class="dropdown-center my-5 ">
+    <a id="checkLink" href="#" class="btn btn-success w-25 my-5">Check</a>
+    <div class="dropdown-center ">
         <h4>Select User to See his Orders</h4>
-        <button class="btn btn-secondary w-25 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-dark w-25 dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Select User
         </button>
-        <ul class="dropdown-menu dropdown-menu w-50 text-center">
+        <ul class="dropdown-menu dropdown-menu w-25 text-center bg-body-secondary" >
             <?php
             foreach ($users as $user) :
             ?>
@@ -69,7 +79,7 @@
     <h1 class="text-center my-5">There is no Orders!</h1>
 <?php endif ?>
 <style>
-    [type="date"] {
+    [type="text"] {
         background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
     }
 

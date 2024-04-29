@@ -1,133 +1,196 @@
+<div class="d-flex justify-content-around my-5 mb-0">
+        <div class="">
+            <input placeholder="Date From" class="textbox-n w-100" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date_from" />
+        </div>
+        <div class="">
+            <input placeholder="Date To" class="textbox-n w-100" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date_to" />
+        </div>
+    </div>
+    <div style="margin-left:90%;">
+        <a id="checkLink" href="#" class="btn w-50 fw-bolder fs-5" style="background-color:#34bc1c; color:white; left:100%">GO</a>
+    </div>
+    <div class="container">
+        <?php foreach ($orders as $order) : ?>
+            <div class="card">
+                <a href="?view=user-orders&action=details&order_id=<?php echo $order['id'].'&total_price='.$order['total_price'];?>">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1604135307399-86c6ce0aba8e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1374&q=80">
+                    </div>
+                </a>
+                <div class="card-text"> 
+                    <p class="card-meal-type">Date : <?php echo $order['created_date'] ?> </p>
+                    <h2 class="card-title">Status : <span class="fs-5"><?php echo $order['status']; ?></span></h2>
+                    <h2 class="card-title">Amount : <span class="fs-5"><?php echo $order['total_price']; ?> EGP</span></h2>
+                </div>
+                <?php if ($order['status'] == "Processing") : ?>
+                    <a class=" card-price btn w-25 fs-5 text-center mb-0 " href="#!" style="text-decoration:none; margin-top:15px;background-color:#970C0A;color: #fff;">Cancel</a>
+                    <!--  <div class="card-price"><?php echo $order['total_price'] ?> EGP</div> -->
+                <?php endif; ?>
 
-<div class="container">
-<div class="card">
-  <div class="card-image">
-    <img src="https://images.unsplash.com/photo-1604135307399-86c6ce0aba8e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1374&q=80">
-  </div>
-  <div class="card-text">
-    <p class="card-meal-type">Breakfast/Eggs</p>
-    <h2 class="card-title">Délicieux Bénédicte</h2>
-    <p class="card-body">Eggs Benedict with hollandaise sauce, crispy bacon and an assortment of garden herbs.</p>
-  </div>
-  <div class="card-price">$56</div>
-</div>
-  <div class="card">
-  <div class="card-image">
-    <img src="https://images.unsplash.com/photo-1551782450-17144efb9c50?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1769&q=80">
-  </div>
-  <div class="card-text">
-    <p class="card-meal-type">Lunch/Meat</p>
-    <h2 class="card-title">Du bœuf Burger</h2>
-    <p class="card-body">A beef burger with wholewheat patty, juicy lettuce and a side of gluten free fries</p>
-  </div>
-  <div class="card-price">$39</div>
-</div>
-  <div class="card">
-  <div class="card-image">
-    <img src="https://images.unsplash.com/photo-1635146037526-a75e6905ad78?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1834&q=80">
-  </div>
-  <div class="card-text">
-    <p class="card-meal-type">Soups/Meat</p>
-    <h2 class="card-title">Soupe à l’oignon</h2>
-    <p class="card-body">The traditional French soup made with onions and beef with a dollop of garlic and saffaron mayonise.</p>
-  </div>
-  <div class="card-price">$69</div>
-</div>
-  <div class="card">
-  <div class="card-image">
-    <img src="https://www.expatica.com/app/uploads/sites/5/2020/03/Coq-au-vin.jpg">
-  </div>
-  <div class="card-text">
-    <p class="card-meal-type">Appetizers/Meat</p>
-    <h2 class="card-title">Coq au Vin</h2>
-    <p class="card-body">Chickens doused in wine, mushrooms, pork, onions and garlic.</p>
-  </div>
-  <div class="card-price">$104</div>
-</div>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
-</div>
+    <style>
+        /*@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap');*/
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,900;1,400;1,900&display=swap');
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Playfair Display', serif;
-}
-body{ background:url(https://images.unsplash.com/photo-1495195129352-aeb325a55b65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1776&q=80);
-  background-size:cover;
-  background-position:right;
-  background-attachment:fixed;
-}
-#header{
-  margin:20px;
-}
-#header>h1{
-  text-align:center;
-  font-size:3rem;
-}
-#header>p{
-  text-align:center;
-  font-size:1.5rem;
-  font-style:italic;
-}
-.container{
-  width:100vw;
-  display:flex;
-  justify-content:space-around;
-  flex-wrap:wrap;
-  padding:40px 20px;
-}
-.card{
-  display:flex;
-  flex-direction:column;
-  width:400px;
-  margin-bottom:60px;
-}
-.card>div{
-  box-shadow:0 15px 20px 0 rgba(0,0,0,0.5);
-}
-.card-image{
-  width:400px;
-  height:250px;
-}
-.card-image>img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:bottom;
-}
-.card-text{
-  margin:-30px auto;
-  margin-bottom:-50px;
-  height:300px;
-  width:300px;
-  background-color:#1D1C20;
-  color:#fff;
-  padding:20px;
-}
-.card-meal-type{
-  font-style:italic;
-}
-.card-title{
-  font-size:2.2rem;
-  margin-bottom:20px;
-  margin-top:5px;
-}
-.card-body{
-  font-size:1.25rem;
-}
-.card-price{
-  width:100px;
-  height:100px;
-  background-color:#970C0A;
-  color:#fff;
-  margin-left:auto;
-  font-size:2rem;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', serif;
+        }
 
-</style>
+        body {
+            background: url(https://images.unsplash.com/photo-1495195129352-aeb325a55b65?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1776&q=80);
+            background-size: cover;
+            background-position: right;
+            background-attachment: fixed;
+        }
+
+        #header {
+            margin: 20px;
+        }
+
+        #header>h1 {
+            text-align: center;
+            font-size: 3rem;
+        }
+
+        #header>p {
+            text-align: center;
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        .container {
+            width: 100vw;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+        }
+
+        [type="text"] {
+            background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
+        }
+
+        [type="date"] {
+            background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
+        }
+
+        [type="text"]::-webkit-inner-spin-button {
+            display: none;
+        }
+
+        [type="text"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+        }
+
+        [type="date"]::-webkit-inner-spin-button {
+            display: none;
+        }
+
+        [type="date"]::-webkit-calendar-picker-indicator {
+            opacity: 0;
+        }
+
+        input {
+            border: 1px solid #c4c4c4;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 3px 5px;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+            width: 190px;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+            margin-bottom: 30px;
+            height: 400px;
+        }
+
+        .card>div {
+            box-shadow: 0 15px 20px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .card-image {
+            width: 400px;
+            height: 200px;
+        }
+
+        .card-image>img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: bottom;
+        }
+
+        .card-text {
+            margin: -30px auto;
+            margin-bottom: -50px;
+            height: 200px;
+            width: 300px;
+            background-color: #1D1C20;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .card-meal-type {
+            font-style: italic;
+        }
+
+        .card-title {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            margin-top: 5px;
+        }
+
+        .card-body {
+            font-size: 1.25rem;
+        }
+
+        .card-price {
+            width: 100px;
+            height: 100px;
+            background-color: #970C0A;
+            color: #fff;
+            margin-left: auto;
+            font-size: 1.25rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+    <script>
+        // Get the input elements
+        const dateFromInput = document.getElementById('date_from');
+        const dateToInput = document.getElementById('date_to');
+        const checkLink = document.getElementById('checkLink');
+
+        function constructUrl() {
+            let url = '?view=admin-checks';
+            const dateFromValue = dateFromInput.value;
+            const dateToValue = dateToInput.value;
+
+            if (dateFromValue) {
+                url += `&date_from=${dateFromValue}`;
+            }
+            if (dateToValue) {
+                url += `&date_to=${dateToValue}`;
+            }
+
+            return url;
+        }
+
+        function updateCheckLinkUrl() {
+            const url = constructUrl();
+            checkLink.href = url;
+        }
+
+        dateFromInput.addEventListener('change', updateCheckLinkUrl);
+        dateToInput.addEventListener('change', updateCheckLinkUrl);
+    </script>

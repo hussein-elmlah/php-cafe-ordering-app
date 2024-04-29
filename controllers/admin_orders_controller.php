@@ -63,6 +63,9 @@ class AdminOrdersController
 
         $result = $db->paramsQuery($base_query, $params, $search_fields);
         $items = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
+
         include './views/admin/orders/display_order_details_view.php';
 
         Pagination($current_page, $total_pages);

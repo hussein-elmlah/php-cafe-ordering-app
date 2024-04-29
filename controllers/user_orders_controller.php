@@ -9,9 +9,9 @@ include 'includes/pagination.php';
 
 class UserOrdersController
 {
+
     function add_order()
     {
-        session_start();
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $total_amount = isset($_GET['total_amount']) ? $_GET['total_amount'] : null;
@@ -44,21 +44,8 @@ class UserOrdersController
             echo "<p class='text-danger'>failed to request order</p>";
         }
     }
-   /*  function edit_order($order_id,$new_status)
-    {
-            $db = Database::getInstance();
-            $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-            $fields = "`status` = :$new_status";
-            $query = $db->update('orders',$order_id,$fields);
-            if($query === false) {
-                include 'all_orders_view.php';
-            } else {
-                echo "<p class='text-danger'> Faild to update </p>";
-            }
-        } */
     function cancel_order()
     {
-        session_start();
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
@@ -67,74 +54,71 @@ class UserOrdersController
     }
     function get_orders()
     {
-        session_start();
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+        $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : 'john@example.com';
+        $current_page = 1;
+        $total_pages = 2;
 
+        $base_query = "SELECT * FROM orders WHERE user_email = '$user_email'";
+        $params = [
+            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
+            'order' => isset($_GET['order']) ? $_GET['order'] : null,
+            'search' => isset($_GET['search']) ? $_GET['search'] : null,
+        ];
+
+        $search_fields = ['user_email'];
+
+        $result = $db->paramsQuery($base_query, $params, $search_fields);
+        $orders = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
+
+        include './views/user/orders/display_orders_view.php';
+
+        Pagination($current_page, $total_pages);
+    }
+    public function display_user_order_details()
+    {
         $current_page = 1;
         $total_pages = 2;
 
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-        $base_query = "SELECT * FROM orders where user_email = '$user_email'";
+        $base_query = "SELECT * FROM order_items WHERE order_id = '{$_GET['order_id']}'";
 
         $params = [
             'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 5,
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
 
         // var_dump( $params);
 
-        $search_fields = ['user_email'];
+        $search_fields = ['name', 'name'];
 
         $result = $db->paramsQuery($base_query, $params, $search_fields);
-
-        $orders = $result['data'];
+        $items = $result['data'];
         $current_page = $result['current_page'];
         $total_pages = $result['total_pages'];
-
-        include './views/user/display_orders_view.php';
+        
+        include './views/user/orders/order_details_view.php';
 
         Pagination($current_page, $total_pages);
     }
-    function filter_orders_date()
-    {
-        session_start();
+    function getProduct($product_id) {
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        $from_date = $_GET['from_date'];
-        $to_date = $_GET['to_date'];
-        $base_query = "SELECT * FROM orders WHERE created_date BETWEEN '$from_date' and '$to_date' ";
-        
-        $params = [
-            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
-            'order' => isset($_GET['order']) ? $_GET['order'] : null,
-            'search' => isset($_GET['search']) ? $_GET['search'] : null,
-        ];
-
-        // var_dump( $params);
-
-        $search_fields = ['created_date'];
-
-        $result = $db->paramsQuery($base_query, $params, $search_fields);
-
-        $orders = $result['data'];
-        $current_page = $result['current_page'];
-        $total_pages = $result['total_pages'];
-
-        include './views/user/display_orders_view.php';
-
-        Pagination($current_page, $total_pages);
+        $query = "SELECT * FROM products WHERE id = '$product_id' ";
+        return $db->customQuery($query);
     }
 }
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
-$order_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
+$order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
 
 $UserOrders = new UserOrdersController();
 
@@ -143,7 +127,14 @@ switch ($action) {
         if ($order_id) {
             $UserOrders->cancel_order();
         } else {
-            echo 'Invalid user ID';
+            echo 'Invalid order ID';
+        }
+        break;
+    case 'details':
+        if ($order_id) {
+            $UserOrders->display_user_order_details();
+        } else {
+            echo 'Invalid order ID';
         }
         break;
     default:
