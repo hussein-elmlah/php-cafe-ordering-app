@@ -3,11 +3,12 @@
 // require_once "utilities/redirectToView.php";
 
 $requestView = $_GET['view'] ?? '';
-// $isLoggedIn = @$_SESSION['is_auth'];
-//     $loggedUser = array(
-//         'isAdmin' => @$_SESSION['is_admin'],
-//         'first_name' => @$_SESSION['user_name']
-//     );
+$isLoggedIn = @$_SESSION['is_auth'];
+$loggedUser = array(
+    'isAdmin' => @$_SESSION['is_admin'],
+    'first_name' => @$_SESSION['user_name']
+);
+
 switch ($requestView) {
     case 'logout':
         if (session_status() != PHP_SESSION_NONE) {
@@ -23,19 +24,16 @@ switch ($requestView) {
         break;
 
     case 'admin-users':
-        if (!$isAdmin) {     // admin guard
+        if (!$isAdmin) {
             $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
             $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
             echo "<script>window.location.href = '$url';</script>";
-            break;
         } else {
             include 'controllers/admin_users_controller.php';
         }
+        break;
 
-    case '#':
-    case '/':
     case 'admin-home':
-        // admin guard
         if (!$loggedUser['isAdmin']) {
             break;
         };
