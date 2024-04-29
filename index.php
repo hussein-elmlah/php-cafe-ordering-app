@@ -38,7 +38,7 @@ error_reporting(E_ALL);
 
 <body>
     <?php include 'includes/navbar.php'; ?>
-    <div class="container-fluid px-1" style="min-height: 78vh">
+    <div class="container" style="min-height: 78vh">
         <?php include 'router.php'; ?>
     </div>
     <?php include 'includes/footer.php'; ?>
