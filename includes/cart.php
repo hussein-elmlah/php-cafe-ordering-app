@@ -14,7 +14,7 @@ require_once "utilities/redirectToView.php";
                     <p><?php echo $product['price'] * $product['quantity']; ?> EGP</p>
                 </div>
                 <div class="d-flex justify-content-end align-items-center gap-1 w-50 me-4">
-                    <p class="me-3">Quantity: <?php echo $product['quantity']; ?></p>
+                    <p class="me-3">Q: <?php echo $product['quantity']; ?></p>
                     <button name="change_count" value="<?php echo $product['id'] . " " . ($product['quantity'] + 1); ?>" class="btn btn-secondary btn-increase">+</button>
                     <button name="change_count" value="<?php echo $product['id'] . " " . ($product['quantity'] - 1); ?>" class="btn btn-secondary btn-decrease">-</button>
                 </div>
@@ -24,32 +24,34 @@ require_once "utilities/redirectToView.php";
     <?php endforeach; ?>
 </form>
 
-<div class="d-flex flex-column">
-    <label class="fs-5 mt-3" for="notes">Notes</label>
-    <textarea id="notes" name="notes" rows="4" cols="50" style="resize: none;"></textarea>
-</div>
+<form method="post" action="?view=admin-home">
+    <div class="d-flex flex-column">
+        <label class="fs-5 mt-3" for="notes">Notes</label>
+        <textarea id="notes" name="notes" rows="4" cols="50" style="resize: none;"></textarea>
+    </div>
+    
+    <span class="d-flex gap-3 mt-4">
+        <label class="fs-5" for="room">Room</label>
+        <select class="form-control w-50" name="room">
+            <option value="">Choose...</option>
+            <option value="Cafteria">Cafteria</option>
+            <option value="Hall">Hall</option>
+            <option value="Office">Office</option>
+        </select>
+    </span>
+    
+    <hr class="my-4">
+    
+    <h2>
+        <?php
+        $totalPrice = 0;
+        foreach ($_SESSION['cart'] as $product) {
+            $totalPrice += $product['price'] * $product['quantity'];
+        }
+    
+        echo $totalPrice . " EGP";
+        ?>
+    </h2>
 
-<span class="d-flex gap-3 mt-4">
-    <label class="fs-5" for="room">Room</label>
-    <select class="form-control w-50" id="room">
-        <option value="">Choose...</option>
-        <option value="option1">Cafteria</option>
-        <option value="option2">Hall</option>
-        <option value="option3">Office</option>
-    </select>
-</span>
-
-<hr class="my-4">
-
-<h2>
-    <?php
-    $totalPrice = 0;
-    foreach ($_SESSION['cart'] as $product) {
-        $totalPrice += $product['price'] * $product['quantity'];
-    }
-
-    echo $totalPrice . " EGP";
-    ?>
-</h2>
-
-<a href="#" class="btn btn-primary my-4">Confirm</a>
+    <button name="order_cart" class="btn btn-primary my-4">Confirm</button>
+</form>

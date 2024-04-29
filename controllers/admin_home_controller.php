@@ -79,5 +79,14 @@ if (isset($_POST['change_count'])) {
     }
 }
 
+if (isset($_POST['order_cart'])) {
+    unset($_POST['order_cart']);
+
+    $queryString = http_build_query($_POST);
+    $queryString = urlencode($queryString);
+
+    header("Location: orders.php?$queryString");
+}
+
 $adminHomeController = new AdminHomeController();
 $adminHomeController->showHome($adminHomeController->getProducts());
