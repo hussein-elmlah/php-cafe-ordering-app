@@ -1,6 +1,15 @@
 <?php include_once 'controllers/admin_home_controller.php'; ?>
 
-<div class="container-fluid">
+<head>
+    <style>
+        h1,h2,h3,h4,h5,h6,p {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<div class="container-fluid p-0">
     <div class="row">
         <div class="col-5">
             <?php include_once 'includes/cart.php'; ?>
