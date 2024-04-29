@@ -59,7 +59,6 @@ switch ($requestView) {
                 // if (!$loggedUser['isAdmin']){ break; }; // admin guard
                 include 'controllers/admin_checks_controller.php';
                 break;
-
     default:
         include 'views/404.php';
         break;

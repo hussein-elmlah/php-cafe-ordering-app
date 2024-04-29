@@ -98,7 +98,7 @@ class AdminOrdersController
         $query = "SELECT * FROM products WHERE id = '$product_id' ";
         return $db->customQuery($query);
     }
-   
+    
 }
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;

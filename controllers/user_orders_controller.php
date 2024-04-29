@@ -70,7 +70,7 @@ class UserOrdersController
         session_start();
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : 'john@example.com';
+        $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
 
         $current_page = 1;
         $total_pages = 2;
@@ -78,7 +78,7 @@ class UserOrdersController
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-        $base_query = "SELECT * FROM orders";
+        $base_query = "SELECT * FROM orders where user_email = '$user_email'";
 
         $params = [
             'page' => isset($_GET['page']) ? $_GET['page'] : 1,
@@ -101,8 +101,35 @@ class UserOrdersController
 
         Pagination($current_page, $total_pages);
     }
-    function filtered_orders()
+    function filter_orders_date()
     {
+        session_start();
+        $db = Database::getInstance();
+        $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        $from_date = $_GET['from_date'];
+        $to_date = $_GET['to_date'];
+        $base_query = "SELECT * FROM orders WHERE created_date BETWEEN '$from_date' and '$to_date' ";
+        
+        $params = [
+            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
+            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 2,
+            'order' => isset($_GET['order']) ? $_GET['order'] : null,
+            'search' => isset($_GET['search']) ? $_GET['search'] : null,
+        ];
+
+        // var_dump( $params);
+
+        $search_fields = ['created_date'];
+
+        $result = $db->paramsQuery($base_query, $params, $search_fields);
+
+        $orders = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
+
+        include './views/user/display_orders_view.php';
+
+        Pagination($current_page, $total_pages);
     }
 }
 
@@ -112,14 +139,6 @@ $order_id = isset($_GET['user_id']) ? $_GET['user_id'] : null;
 $UserOrders = new UserOrdersController();
 
 switch ($action) {
-    case 'edit':
-        if ($order_id) {
-            $order_status = isset($_GET['status']) ? $_GET['status'] :'';
-            $UserOrders->edit_order($order_id,$new_status);
-        } else {
-            echo 'Invalid user ID';
-        }
-        break;
     case 'delete':
         if ($order_id) {
             $UserOrders->cancel_order();
