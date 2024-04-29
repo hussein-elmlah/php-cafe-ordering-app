@@ -1,8 +1,14 @@
 <h3>Add to user</h3>
 
-<select class="form-control w-50 my-4" id="user-selector">
-    <option value="">Choose...</option>
-    <option value="option1">Hoss</option>
-    <option value="option2">Steve</option>
-    <option value="option3">Bill</option>
-</select>
+<form method="post">
+    <select class="form-control w-50 my-4" name="user_selected" onchange="this.form.submit()">
+        <option value="">Choose User...</option>
+        <?php foreach ($users as $user) : ?>
+            <?php if ($user['id'] == $_SESSION['user_selected_id']) : ?>
+                <option value="<?php echo $user['id']; ?>" selected><?php echo $user['name']; ?></option>
+            <?php else : ?>
+                <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </select>
+</form>
