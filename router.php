@@ -10,6 +10,17 @@ $loggedUser = array(
 );
 
 switch ($requestView) {
+    case "":
+    case "home":
+        if ($isLoggedIn) {
+            include 'controllers/user_home_controller.php';
+            break;
+        }
+  
+    case 'login':
+        include 'controllers/user_controller.php';
+        break;
+
     case 'logout':
         if (session_status() != PHP_SESSION_NONE) {
             session_destroy();
@@ -17,10 +28,6 @@ switch ($requestView) {
         $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
         $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
         echo "<script>window.location.href = '$url';</script>";
-        break;
-
-    case 'login':
-        include 'controllers/user_controller.php';
         break;
 
     case 'admin-users':
