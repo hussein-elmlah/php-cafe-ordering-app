@@ -27,6 +27,7 @@ class UserController
             $_SESSION['is_auth'] = true;
             $_SESSION['is_admin'] = $loggedInUserData[0]['is_admin'];
             $_SESSION['user_name'] = $loggedInUserData[0]['name'];
+            $_SESSION['email'] = $loggedInUserData[0]['email'];
             if ($loggedInUserData[0]['is_admin'] === 1) {
                 echo '<script> 
                 window.location.href = window.location.pathname + "?view=admin-users";

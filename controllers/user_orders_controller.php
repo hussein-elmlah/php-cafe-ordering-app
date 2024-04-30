@@ -67,7 +67,7 @@ class UserOrdersController
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
         $db->delete('orders', $order_id);
-        include './views/user/orders/cancel_order_view.php';
+        include 'views/user/orders/cancel_order_view.php';
     }
     function get_orders()
     {
@@ -88,13 +88,14 @@ class UserOrdersController
         $search_fields = ['user_email'];
 
         $result = $db->paramsQuery($base_query, $params, $search_fields);
-        $orders = $result['data'];
-        $current_page = $result['current_page'];
-        $total_pages = $result['total_pages'];
+        var_dump($result);
+        // $orders = $result['data'];
+        // $current_page = $result['current_page'];
+        // $total_pages = $result['total_pages'];
 
-        include './views/user/orders/display_orders_view.php';
+        // include 'views/user/orders/display_orders_view.php';
 
-        Pagination($current_page, $total_pages);
+        // Pagination($current_page, $total_pages);
     }
     public function display_user_order_details()
     {
@@ -122,7 +123,7 @@ class UserOrdersController
         $current_page = $result['current_page'];
         $total_pages = $result['total_pages'];
 
-        include './views/user/orders/order_details_view.php';
+        include 'views/user/orders/order_details_view.php';
 
         Pagination($current_page, $total_pages);
     }
@@ -183,7 +184,7 @@ class UserOrdersController
         $orders = $result['data'];
         $current_page = $result['current_page'];
         $total_pages = $result['total_pages'];
-        include './views/user/orders/display_orders_view.php';
+        include 'views/user/orders/display_orders_view.php';
         Pagination($current_page, $total_pages);
     }
 }

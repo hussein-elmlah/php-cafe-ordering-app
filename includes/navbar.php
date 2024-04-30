@@ -30,6 +30,9 @@ $userName = @$_SESSION['user_name'];
                     <li class="nav-item">
                         <a class="nav-link" href="shoppingCart">Cart</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="user-orders">Orders</a>
+                    </li>
                 <?php endif; ?>
                 <?php if ($isAdmin && $isLoggedIn) : ?>
                     <li class="nav-item">
