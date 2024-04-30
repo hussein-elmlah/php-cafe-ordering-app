@@ -65,5 +65,44 @@ function uploadImage($files, $old_data)
 // print_r($result);
 
 
+// Function to handle image upload
+function handleImageUpload($file) {
+    // Check if an image was uploaded
+    if (!isset($file['tmp_name']) || empty($file['tmp_name'])) {
+        return ['error' => 'No image uploaded.'];
+    }
+
+    
+    $uploadDir = 'public/images/';
+    $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+
+    
+    $fileName = $file['name'];
+    $fileTmpName = $file['tmp_name'];
+    $fileSize = $file['size'];
+    $fileError = $file['error'];
+
+
+    $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+    
+    if (!in_array($fileExt, $allowedTypes)) {
+        return ['error' => 'Invalid file type. Allowed types: jpg, jpeg, png, gif'];
+    }
+
+    
+    if ($fileError !== 0) {
+        return ['error' => 'Error uploading file. Please try again.'];
+    }
+
+    $uniqueFileName = uniqid('', true) . '.' . $fileExt;
+
+    
+    if (!move_uploaded_file($fileTmpName, $uploadDir . $uniqueFileName)) {
+        return ['error' => 'Error moving file to upload directory. Please check permissions.'];
+    }
+
+    return ['success' => 'Image uploaded successfully.', 'image' => $uploadDir . $uniqueFileName];
+}
 
 ?>
