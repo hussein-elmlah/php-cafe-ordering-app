@@ -99,7 +99,9 @@
 </div>
 
 <div class="container mt-5">
+
     <h1>List of Products</h1><br>
+    <div id="productIDDisplay"></div>
     <!-- Button to trigger Add Product Modal -->
 <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Add Product</button>
 
@@ -155,9 +157,10 @@
 <script>
     $(document).ready(function() {
         // Function to handle add product form submission
+        
         $('#submitAddProduct').click(function() {
             var formData = new FormData($('#addProductForm')[0]);
-
+          
             // AJAX request to submit the form data
             $.ajax({
                 type: 'POST',
@@ -250,12 +253,18 @@
             $('.edit-product-button').click(function() {
                 // Get the product ID from the data-product-id attribute
                 var productId = $(this).data('product-id');
-                
-                console.log('Product ID:', productId);
+                    // Display the product ID on the screen
+                $('#productIDDisplay').text('Product ID: ' + productId).show();
 
-                // Show the Edit Product modal
-                $('#editProductModal').modal('show');
-            });
+            setTimeout(function() {
+                $('#productIDDisplay').fadeOut();
+            }, 4000); 
+                 console.log('Product ID:', productId);
+                //  window.location.href = '?view=admin-products&product_id=' + productId;
+
+         
+        });
+            
         });
   
 </script>
