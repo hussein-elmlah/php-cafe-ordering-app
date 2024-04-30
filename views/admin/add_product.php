@@ -99,9 +99,9 @@
 </div>
 
 <div class="container mt-5">
-<div id="productIDDisplay"></div>
 
     <h1>List of Products</h1><br>
+    <div id="productIDDisplay"></div>
     <!-- Button to trigger Add Product Modal -->
 <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Add Product</button>
 
