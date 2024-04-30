@@ -30,7 +30,6 @@
                 <?php foreach ($categories as $category): ?>
 
                     <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
-                    <button class="btn btn-primary">Add Category</button>
                 <?php endforeach; ?>
             </select>
         </div>
