@@ -9,24 +9,35 @@ include 'includes/pagination.php';
 
 class UserOrdersController
 {
-
+    
     function add_order()
     {
+        $cart = $_SESSION['cart'];
+        foreach ($cart as $product) {
+            $productId = $product['id'];
+            echo "Product ID: $productId <br>";
+        }
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $total_amount = isset($_GET['total_amount']) ? $_GET['total_amount'] : null;
         $total_price = isset($_GET['total_price']) ? $_GET['total_price'] : null;
         $room = isset($_GET['room']) ? $_GET['room'] : '';
-        $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
-
+        $notes = isset($_GET['notes']) ? $_GET['notes'] : ' ' ;
+        if($_SESSION['is_admin']){
+            $user_email = $_SESSION['user_selected_id'];
+        }
+        else{
+            $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
+        }
+        
         // Enclose string values in quotes
         $total_amount = is_numeric($total_amount) ? $total_amount : "'$total_amount'";
         $total_price = is_numeric($total_price) ? $total_price : "'$total_price'";
         $room = "'$room'";
         $user_email = "'$user_email'";
-
-        $columns = "total_amount, total_price, room, user_email";
-        $values = "$total_amount, $total_price, $room, $user_email";
+        
+        $columns = "total_amount, total_price, room, user_email, notes";
+        $values = "$total_amount, $total_price, $room, $user_email, $notes";
 
         // Perform the insert operation
         $order = $db->insert('orders', $columns, $values);
@@ -34,11 +45,12 @@ class UserOrdersController
             $lastInserted = $db->customQuery("SELECT LAST_INSERT_ID()");
             $order_id = $lastInserted[0]["LAST_INSERT_ID()"];
             $item_columns = implode(',', array('quantity', 'order_id', 'product_id'));
-            $products = isset($_GET['products']) ? $_GET['products'] : [];
+            $products = $_SESSION['cart'];
             foreach ($products as $product) {
-                $quantity = isset($_GET['quantity']) ? $_GET['quantity'] : null;
-                $item_values =  implode(',', array($quantity, $order_id, $product));
+                //$quantity = $product['quantity'];
+                $item_values =  implode(',', array($product['quantity'], $order_id, $product['id']));
                 $item = $db->insert('order_items', $item_columns, $item_values);
+                include './views/user/orders/display_orders_view.php';
             }
         } else {
             echo "<p class='text-danger'>failed to request order</p>";

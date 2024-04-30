@@ -36,7 +36,7 @@
                     </div>
                 <?php endforeach; ?>
             </form>
-            <form method="post" action="?view=home">
+            <form method="post" action="?view=home&total_price=<?php echo $totalPrice?>&total_amount=<?php echo $total_amount?>">
                 <div class="d-flex flex-column">
                     <label class="fs-5 mt-3" for="notes">Notes</label>
                     <textarea id="notes" name="notes" rows="4" cols="50" style="resize: none;"></textarea>
@@ -54,8 +54,10 @@
                 <h2>
                     <?php
                     $totalPrice = 0;
+                    $total_amount = 0; 
                     foreach ($_SESSION['cart'] as $product) {
                         $totalPrice += $product['price'] * $product['quantity'];
+                        $total_amount +=  $product['quantity'];
                     }
 
                     echo $totalPrice . " EGP";
