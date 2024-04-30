@@ -49,6 +49,8 @@ class UserOrdersController
             if ($_SESSION['is_admin']) {
                 include './views/admin/orders/display_orders_view.php';
             } else {
+                // header("Location: ?view=user-orders&action=add&notes=$notes&room=$room");
+                // echo '<script> location.reload(); </script>';
                 include './views/user/orders/display_orders_view.php';
             }
         } else {

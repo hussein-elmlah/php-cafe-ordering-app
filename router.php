@@ -11,7 +11,7 @@ $isLoggedIn = @$_SESSION['is_auth'];
 // echo $_SESSION['email'];
 
 switch ($requestView) {
-    case "":
+    // case "":
     case "home":
         if ($isLoggedIn) {
             include 'controllers/user_home_controller.php';
