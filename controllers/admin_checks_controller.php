@@ -1,7 +1,7 @@
 <?php
-require_once 'config/db_info.php';
-include 'includes/pagination.php';
-require('./db/db_class.php');
+// require_once 'config/db_info.php';
+// include 'includes/pagination.php';
+// require('./db/db_class.php');
 class ChecksController
 {
     function get_orders_checks_user()

@@ -45,9 +45,9 @@ require_once "utilities/redirectToView.php";
     <h2>
         <?php
         $totalPrice = 0;
-        foreach ($_SESSION['cart'] as $product) {
-            $totalPrice += $product['price'] * $product['quantity'];
-        }
+        // foreach ($_SESSION['cart'] as $product) {
+        //     $totalPrice += $product['price'] * $product['quantity'];
+        // }
     
         echo $totalPrice . " EGP";
         ?>

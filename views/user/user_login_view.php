@@ -21,11 +21,11 @@
             
             <div class="col-md-8">
                 <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" id="inputEmail4">
+                <input type="email" class="form-control" value="<?php echo @$_SESSION['old_email']; ?>" name="email" id="inputEmail4">
             </div>
             <div class="col-md-8">
                 <label for="inputEmail4" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" id="inputEmail4">
+                <input type="password" class="form-control" value="<?php echo @$_SESSION['old_password']; ?>" name="password" id="inputEmail4">
             </div>
 
             <div class="col-12">

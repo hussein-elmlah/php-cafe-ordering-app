@@ -1,9 +1,9 @@
 <?php
 
-require_once 'db/db_class.php'; 
-require_once 'models/ProductModel.php';
-include 'includes/pagination.php';
-require_once 'utilities/uploadImage.php';
+// require_once 'db/db_class.php'; 
+// require_once 'models/ProductModel.php';
+// include 'includes/pagination.php';
+// require_once 'utilities/uploadImage.php';
 
 // Initialize variables 
 $name = $error = '';

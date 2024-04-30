@@ -1,7 +1,7 @@
 <?php
 
-require_once 'db/db_class.php';
-require_once 'config/db_info.php';
+// require_once '../db/db_class.php';
+// require_once '../config/db_info.php';
 
 class User
 {
@@ -21,7 +21,7 @@ class User
             $query = "CREATE TABLE IF NOT EXISTS users (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
                     `name` varchar(40) NOT NULL,
-                    `email` varchar(40) NOT NULL,
+                    `email` varchar(255) NOT NULL,
                     `password` varchar(50) NOT NULL,
                     `room` int(11) NOT NULL,
                     `ext` varchar(20) NOT NULL,
@@ -38,6 +38,6 @@ class User
     }
 }
 
-$user = new User();
+// $user = new User();
 
-$user->createUsersTable();
+// $user->createUsersTable();

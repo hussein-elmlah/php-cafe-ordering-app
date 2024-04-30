@@ -1,8 +1,8 @@
 <?php
 
-require_once 'config/db_info.php';
-require_once 'db/db_class.php';
-require_once 'models/User.php';
+// require_once 'config/db_info.php';
+// require_once 'db/db_class.php';
+// require_once 'models/User.php';
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();

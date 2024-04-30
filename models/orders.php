@@ -1,8 +1,8 @@
 <?php
 
-require_once './db/db_class.php';
+// require_once '../db/db_class.php';
 require_once 'rooms.php';
-require_once './config/db_info.php';
+// require_once '../config/db_info.php';
 
 class Order{
 
@@ -13,7 +13,8 @@ class Order{
         $this->db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
        
     }
-
+    // ALTER TABLE `orders` ADD  FOREIGN KEY (`user_email`) REFERENCES `users`(`email`) ON DELETE CASCADE ON UPDATE CASCADE;
+    // ALTER TABLE `orders` ADD  FOREIGN KEY (`room`) REFERENCES `rooms`(`name`) ON DELETE RESTRICT ON UPDATE RESTRICT;
     function createOrdersTable(){
         try {
             $query = "CREATE TABLE IF NOT EXISTS orders (

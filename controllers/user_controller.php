@@ -39,6 +39,8 @@ class UserController
         } else {
             $_SESSION['is_auth'] = false;
             $_SESSION['error'] = "Bad Credentials";
+            $_SESSION['old_email'] = $email;
+            $_SESSION['old_password'] = $password;
             echo '<script> 
             window.location.href = window.location.pathname + "?view=login";
             </script>';

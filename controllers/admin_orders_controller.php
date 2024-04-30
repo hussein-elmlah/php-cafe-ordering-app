@@ -1,11 +1,11 @@
 <?php
 
-require_once 'config/db_info.php';
-require_once 'models/User.php';
-require_once 'models/orders.php';
+// require_once 'config/db_info.php';
+// require_once 'models/User.php';
+// require_once 'models/orders.php';
 //require_once  'models/products.php';
-require_once 'models/order_items.php';
-include 'includes/pagination.php';
+// require_once 'models/order_items.php';
+// include 'includes/pagination.php';
 class AdminOrdersController
 {
     public function displayAdminOrders()

@@ -16,11 +16,15 @@ switch ($requestView) {
             include 'controllers/user_home_controller.php';
             break;
         }
-    case 'null':
-        // Include admin-home controller here
-        redirectToView('admin-users'); // delete later
-        break;
+    // case 'null':
+    //     // Include admin-home controller here
+    //     redirectToView('admin-users'); // delete later
+    //     break;
     case 'register':
+        include 'controllers/user_controller.php';
+        break;
+
+    case 'login':
         include 'controllers/user_controller.php';
         break;
 

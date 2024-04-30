@@ -1,13 +1,12 @@
 <?php
 
-require_once 'config/db_info.php';
-require_once 'models/User.php';
-require_once 'models/CategoryModel.php';
-require_once  'models/ProductModel.php';
-require_once 'models/orders.php';
-require_once  'models/order_items.php';
-require_once 'models/order_items.php';
-include 'includes/pagination.php';
+// require_once 'config/db_info.php';
+// require_once 'models/User.php';
+// require_once 'models/CategoryModel.php';
+// require_once  'models/ProductModel.php';
+// require_once 'models/orders.php';
+// require_once  'models/order_items.php';
+// require_once 'models/order_items.php';
 
 class UserOrdersController
 {
