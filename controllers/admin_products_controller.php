@@ -110,6 +110,17 @@ public function updateProduct($id, $name, $price, $image , $category_id) {
         return false; 
     }
 }
+// Method to delete a product
+public function deleteProduct($id) {
+    try {
+        $table="products";
+        return $this->db->delete('products',$id);
+      
+    } catch (PDOException $e) {
+        
+        return false;
+    }
+}
 }
 
 
@@ -193,7 +204,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = 'Required form fields are missing.';
     }
 }
+// Handle delete product
+if(isset($_POST['id'])) {
+    $productId = $_POST['id'];
 
+    
+    $productController = new ProductController();
+
+    // Call the deleteProduct method to delete the product
+    $deleteResult = $productController->deleteProduct($productId);
+
+    if($deleteResult) {
+       
+        $success_message ='Product deleted successfully';
+    } else {
+        
+        $error ='Failed to delete product';
+    }
+} else {
+   
+    $error = 'Product ID is missing';
+}
 // Fetch categories data
 $categories = $productController->getAllCategories();
 

@@ -108,7 +108,59 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this product?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirmDelete" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
 
+<script>
+    $(document).ready(function() {
+        // Delete button click handler
+        $('.btn-delete').click(function() {
+            var productId = $(this).data('product-id');
+            // Display confirmation modal
+            $('#confirmationModal').modal('show');
+
+            // Handle confirmation
+            $('#confirmDelete').click(function() {
+                // Call the deleteProduct function
+                deleteProduct(productId);
+                $('#confirmationModal').modal('hide');
+            });
+        });
+
+        // Function to delete the product
+        function deleteProduct(productId) {
+            // AJAX request to delete the product
+            $.ajax({
+                type: 'POST',
+                url: '', 
+                data: { id: productId },
+                success: function(response) {
+                    console.log(response);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    });
+</script>
 
    
 <script>
