@@ -36,7 +36,7 @@
                     </div>
                 <?php endforeach; ?>
             </form>
-            <form method="post" action="?view=home&total_price=<?php echo $totalPrice?>&total_amount=<?php echo $total_amount?>">
+            <form method="post" action="?view=home">
                 <div class="d-flex flex-column">
                     <label class="fs-5 mt-3" for="notes">Notes</label>
                     <textarea id="notes" name="notes" rows="4" cols="50" style="resize: none;"></textarea>

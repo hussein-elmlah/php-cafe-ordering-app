@@ -2,8 +2,10 @@
 
 require_once 'config/db_info.php';
 require_once 'models/User.php';
+require_once 'models/CategoryModel.php';
+require_once  'models/ProductModel.php';
 require_once 'models/orders.php';
-//require_once  'models/products.php';
+require_once  'models/order_items.php';
 require_once 'models/order_items.php';
 include 'includes/pagination.php';
 
@@ -35,13 +37,14 @@ class UserOrdersController
         $room = "'$room'";
         $user_email = "'$user_email'";
 
-        $columns = "total_amount, total_price, room, user_email, notes";
-        $values = "$total_amount, $total_price, $room, $user_email, $notes";
+        $columns = "total_amount, total_price, room, user_email";
+        $values = "$total_amount, $total_price, $room, $user_email";
 
         // Perform the insert operation
         $order = $db->insert('orders', $columns, $values);
         if ($order) {
             $lastInserted = $db->customQuery("SELECT LAST_INSERT_ID()");
+            var_dump($lastInserted);
             $order_id = $lastInserted[0]["LAST_INSERT_ID()"];
             $item_columns = implode(',', array('quantity', 'order_id', 'product_id'));
             $products = $_SESSION['cart'];
@@ -192,6 +195,9 @@ $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
 $UserOrders = new UserOrdersController();
 
 switch ($action) {
+    case 'add':
+        $UserOrders->add_order();
+        break;
     case 'delete':
         if ($order_id) {
             $UserOrders->cancel_order();
