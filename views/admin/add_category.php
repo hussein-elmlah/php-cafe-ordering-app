@@ -30,7 +30,6 @@
                         <?php endif; ?>
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $category['name']; ?></h5>
-                            <!-- Add any additional category details here -->
                         </div>
                     </div>
                 </div>

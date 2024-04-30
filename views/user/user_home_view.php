@@ -54,8 +54,10 @@
                 <h2>
                     <?php
                     $totalPrice = 0;
+                    $total_amount = 0; 
                     foreach ($_SESSION['cart'] as $product) {
                         $totalPrice += $product['price'] * $product['quantity'];
+                        $total_amount +=  $product['quantity'];
                     }
 
                     echo $totalPrice . " EGP";

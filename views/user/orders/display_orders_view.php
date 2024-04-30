@@ -1,13 +1,15 @@
-<div class="d-flex justify-content-around my-5 mb-0">
-        <div class="">
-            <input placeholder="Date From" class="textbox-n w-100" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date_from" />
+<div class="d-flex my-5 mb-0">
+        <div class="me-auto px-5">
+        <label for=""  class="fs-4">Date From</label>
+            <input placeholder="Date From" class="textbox-n w-100" type="date"  id="date_from" />
         </div>
-        <div class="">
-            <input placeholder="Date To" class="textbox-n w-100" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date_to" />
+        <div class="px-5">
+            <label for="" class="fs-4">Date To</label>
+            <input placeholder="Date To" class="textbox-n w-100" type="date"  id="date_to" />
         </div>
     </div>
     <div style="margin-left:90%;">
-        <a id="checkLink" href="#" class="btn w-50 fw-bolder fs-5" style="background-color:#34bc1c; color:white; left:100%">GO</a>
+        <a id="checkLink" href="#" class="btn w-100 fw-bolder fs-5 " p-5 style="background-color:#34bc1c; color:white; left:100%">GO</a>
     </div>
     <div class="container">
         <?php  if(count($orders)==0):?>
@@ -22,7 +24,7 @@
                 </a>
                 <div class="card-text"> 
                     <p class="card-meal-type">Date : <?php echo $order['created_date'] ?> </p>
-                    <h2 class="card-title">Status : <span class="fs-5"><?php echo $order['status']; ?></span></h2>
+                    <h2 class="card-title ">Status : <span class="fs-5 <?php echo ($order['status'] == 'Done') ? 'text-success' : (($order['status'] == 'Out for delivery') ? 'text-info' : 'text-warning'); ?>"><?php echo $order['status']; ?></span></h2>
                     <h2 class="card-title">Amount : <span class="fs-5"><?php echo $order['total_price']; ?> EGP</span></h2>
                 </div>
                 <?php if ($order['status'] == "Processing") : ?>
@@ -75,20 +77,9 @@
             padding: 40px 20px;
         }
 
-        [type="text"] {
-            background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
-        }
-
+     
         [type="date"] {
             background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
-        }
-
-        [type="text"]::-webkit-inner-spin-button {
-            display: none;
-        }
-
-        [type="text"]::-webkit-calendar-picker-indicator {
-            opacity: 0;
         }
 
         [type="date"]::-webkit-inner-spin-button {
