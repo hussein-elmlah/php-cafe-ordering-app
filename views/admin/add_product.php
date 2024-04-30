@@ -1,8 +1,4 @@
 
-
-    <?php 
-$price = isset($_POST["price"]) ? $_POST["price"] : ''; 
-?>
 <!-- Add Product Modal -->
 <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -47,7 +43,6 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
 
         <button type="submit" class="btn btn-primary">Add Product</button>
         <!-- Display error and success messages -->
-        <span style="color: red;"><?php echo $error; ?></span>
         <span style="color: green;"><?php echo $success_message; ?></span>
     </form>
 
@@ -95,7 +90,7 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
             </select>
         </div>
     <button type="submit" class="btn btn-primary mt-2">Update Product</button>
-    <span style="color: red;"><?php echo $error; ?></span>
+
         <span style="color: green;"><?php echo $success_message; ?></span>
 </form>
 
@@ -122,7 +117,6 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
                        <!-- Button to trigger Edit Product Modal -->
 <button type="button" class="btn btn-primary m-2 edit-product-button" data-bs-toggle="modal" data-product-id="<?php echo $product['id']; ?>" data-bs-target="#editProductModal">Edit Product</button>
                             <button class="btn btn-danger btn-delete" data-product-id="<?php echo $product['id']; ?>">Delete</button>
-                            <span style="color: red;"><?php echo $error; ?></span>
                             <span style="color: green;"><?php echo $success_message; ?></span>
 
                         </div>
