@@ -18,7 +18,7 @@ class Order{
         try {
             $query = "CREATE TABLE IF NOT EXISTS orders (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                created_date DATETIME NOT NULL DEFAULT NOW(),
+                created_date DATE NOT NULL DEFAULT GETDATE(),
                 total_amount INT NOT NULL,
                 status ENUM('Processing', 'Out for delivery', 'Done') NOT NULL DEFAULT 'Processing',
                 room VARCHAR(255) NOT NULL,
