@@ -12,7 +12,7 @@
         <a id="checkLink" href="#" class="btn w-100 fw-bolder fs-5 " p-5 style="background-color:#34bc1c; color:white; left:100%">GO</a>
     </div>
     <div class="container">
-        <?php  if(count($orders)==0):?>
+        <?php  if(!isset($orders)):?>
 <h1 class="text-center-my-5">You don't have any orders yet!</h1>
 <?php else:?>
         <?php foreach ($orders as $order) : ?>
@@ -44,7 +44,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Playfair Display', serif;
         }
 
         body {

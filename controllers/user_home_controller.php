@@ -83,10 +83,9 @@ if (isset($_POST['change_count'])) {
 if (isset($_POST['order_cart'])) {
     unset($_POST['order_cart']);
 
-    $queryString = http_build_query($_POST);
-    $queryString = urlencode($queryString);
-
-    header("Location: ?view=user-orders&action=add&$queryString");
+    $room = $_POST['room'];
+    $notes = $_POST['notes'];
+    header("Location: ?view=user-orders&action=add&notes=$notes&room=$room");
 }
 
 $userHomeController = new UserHomeController();

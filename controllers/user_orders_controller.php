@@ -1,13 +1,5 @@
 <?php
 
-// require_once 'config/db_info.php';
-// require_once 'models/User.php';
-// require_once 'models/CategoryModel.php';
-// require_once  'models/ProductModel.php';
-// require_once 'models/orders.php';
-// require_once  'models/order_items.php';
-// require_once 'models/order_items.php';
-
 class UserOrdersController
 {
 
@@ -16,12 +8,14 @@ class UserOrdersController
         $cart = $_SESSION['cart'];
         foreach ($cart as $product) {
             $productId = $product['id'];
-            echo "Product ID: $productId <br>";
+            // echo "Product ID: $productId <br>";
         }
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
         $total_amount = isset($_GET['total_amount']) ? $_GET['total_amount'] : null;
         $total_price = isset($_GET['total_price']) ? $_GET['total_price'] : null;
+
         $room = isset($_GET['room']) ? $_GET['room'] : '';
         $notes = isset($_GET['notes']) ? $_GET['notes'] : ' ';
         if ($_SESSION['is_admin']) {
@@ -43,7 +37,7 @@ class UserOrdersController
         $order = $db->insert('orders', $columns, $values);
         if ($order) {
             $lastInserted = $db->customQuery("SELECT LAST_INSERT_ID()");
-            var_dump($lastInserted);
+            // var_dump($lastInserted);
             $order_id = $lastInserted[0]["LAST_INSERT_ID()"];
             $item_columns = implode(',', array('quantity', 'order_id', 'product_id'));
             $products = $_SESSION['cart'];
@@ -88,14 +82,14 @@ class UserOrdersController
         $search_fields = ['user_email'];
 
         $result = $db->paramsQuery($base_query, $params, $search_fields);
-        var_dump($result);
-        // $orders = $result['data'];
-        // $current_page = $result['current_page'];
-        // $total_pages = $result['total_pages'];
+        // var_dump($result);
+        $orders = $result['data'];
+        $current_page = $result['current_page'];
+        $total_pages = $result['total_pages'];
 
-        // include 'views/user/orders/display_orders_view.php';
+        include 'views/user/orders/display_orders_view.php';
 
-        // Pagination($current_page, $total_pages);
+        Pagination($current_page, $total_pages);
     }
     public function display_user_order_details()
     {

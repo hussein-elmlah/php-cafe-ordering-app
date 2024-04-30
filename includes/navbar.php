@@ -22,15 +22,6 @@ $userName = @$_SESSION['user_name'];
                         <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="shop">Shop</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="wishlist">Wishlist</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="shoppingCart">Cart</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="user-orders">Orders</a>
                     </li>
                 <?php endif; ?>
@@ -51,9 +42,6 @@ $userName = @$_SESSION['user_name'];
                 <?php endif; ?>
             </ul>
             <div class="d-flex">
-                <?php if (!$isAdmin || !$isLoggedIn) : ?>
-                    <a href="shop" class="btn btn-outline-light me-2">Shop</a>
-                <?php endif; ?>
                 <?php if (!$isLoggedIn) : ?>
                     <a href="login" class="btn btn-outline-light me-2">Login</a>
                     <a href="register&action=register" class="btn btn-outline-light">Register</a>
@@ -64,7 +52,6 @@ $userName = @$_SESSION['user_name'];
                             <?= $userName ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="userprofile">Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

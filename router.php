@@ -8,6 +8,7 @@ $isLoggedIn = @$_SESSION['is_auth'];
 //     'isAdmin' => @$_SESSION['is_admin'],
 //     'first_name' => @$_SESSION['user_name']
 // );
+// echo $_SESSION['email'];
 
 switch ($requestView) {
     case "":
