@@ -86,7 +86,7 @@ if (isset($_POST['order_cart'])) {
     $queryString = http_build_query($_POST);
     $queryString = urlencode($queryString);
 
-    header("Location: display_orders_view.php?$queryString");
+    header("Location: ?view=user-orders&$queryString");
 }
 
 $userHomeController = new UserHomeController();
