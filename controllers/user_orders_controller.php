@@ -9,7 +9,7 @@ include 'includes/pagination.php';
 
 class UserOrdersController
 {
-    
+
     function add_order()
     {
         $cart = $_SESSION['cart'];
@@ -22,20 +22,19 @@ class UserOrdersController
         $total_amount = isset($_GET['total_amount']) ? $_GET['total_amount'] : null;
         $total_price = isset($_GET['total_price']) ? $_GET['total_price'] : null;
         $room = isset($_GET['room']) ? $_GET['room'] : '';
-        $notes = isset($_GET['notes']) ? $_GET['notes'] : ' ' ;
-        if($_SESSION['is_admin']){
+        $notes = isset($_GET['notes']) ? $_GET['notes'] : ' ';
+        if ($_SESSION['is_admin']) {
             $user_email = $_SESSION['user_selected_id'];
-        }
-        else{
+        } else {
             $user_email = isset($_SESSION['email']) ? $_SESSION['email'] : '';
         }
-        
+
         // Enclose string values in quotes
         $total_amount = is_numeric($total_amount) ? $total_amount : "'$total_amount'";
         $total_price = is_numeric($total_price) ? $total_price : "'$total_price'";
         $room = "'$room'";
         $user_email = "'$user_email'";
-        
+
         $columns = "total_amount, total_price, room, user_email, notes";
         $values = "$total_amount, $total_price, $room, $user_email, $notes";
 
@@ -50,6 +49,10 @@ class UserOrdersController
                 //$quantity = $product['quantity'];
                 $item_values =  implode(',', array($product['quantity'], $order_id, $product['id']));
                 $item = $db->insert('order_items', $item_columns, $item_values);
+            }
+            if ($_SESSION['is_admin']) {
+                include './views/admin/orders/display_orders_view.php';
+            } else {
                 include './views/user/orders/display_orders_view.php';
             }
         } else {
@@ -61,7 +64,7 @@ class UserOrdersController
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;
-        $db->delete('orders',$order_id);
+        $db->delete('orders', $order_id);
         include './views/user/orders/cancel_order_view.php';
     }
     function get_orders()
@@ -116,12 +119,13 @@ class UserOrdersController
         $items = $result['data'];
         $current_page = $result['current_page'];
         $total_pages = $result['total_pages'];
-        
+
         include './views/user/orders/order_details_view.php';
 
         Pagination($current_page, $total_pages);
     }
-    function getProduct($product_id) {
+    function getProduct($product_id)
+    {
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $query = "SELECT * FROM products WHERE id = '$product_id' ";
@@ -202,9 +206,9 @@ switch ($action) {
             echo 'Invalid order ID';
         }
         break;
-        case 'date':
-                $UserOrders->get_orders_by_date();
-            break;
+    case 'date':
+        $UserOrders->get_orders_by_date();
+        break;
     default:
         $UserOrders->get_orders();
         break;
