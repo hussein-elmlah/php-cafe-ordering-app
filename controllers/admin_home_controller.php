@@ -112,7 +112,7 @@ if (isset($_POST['order_cart'])) {
     $queryString = http_build_query($_POST);
     $queryString = urlencode($queryString);
 
-    header("Location: orders.php?$queryString");
+    header("Location: display_orders_view.php?$queryString");
 }
 
 $adminHomeController = new AdminHomeController();
