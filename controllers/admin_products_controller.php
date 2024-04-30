@@ -141,8 +141,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"])) {
         if (isset($_FILES["image"])) {
             
             $imageUploadResult = handleImageUpload($_FILES["image"]);
-            var_dump($imageUploadResult);
-            var_dump($image_path);
+            // var_dump($imageUploadResult);
+            // var_dump($image_path);
             if (isset($imageUploadResult['error'])) {
                
                 $error = $imageUploadResult['error'];
@@ -244,9 +244,12 @@ $total_pages = isset($result['total_pages']) ? $result['total_pages'] : 1;
         'isAdmin' => @$_SESSION['is_admin'],
         'first_name' => @$_SESSION['user_name']
     );
-
+    if ($isLoggedIn && $loggedUser['isAdmin']) {
+        include 'views/admin/add_product.php';
+Pagination($current_page, $total_pages);
+    }
     
 
-include 'views/admin/add_product.php';
-Pagination($current_page, $total_pages);
+
+
 ?>

@@ -33,6 +33,7 @@ class Product {
          
              if ($isLoggedIn && $loggedUser['isAdmin']) {
                  echo "Products table created successfully.";
+                 
              }
          
         } catch (PDOException $e) {

@@ -1,11 +1,21 @@
 
-<?php if ($loggedUser['isAdmin']): ?>
+
     <?php 
 $price = isset($_POST["price"]) ? $_POST["price"] : ''; 
 ?>
-<div class="container mt-5">
-    <h1>Add Product</h1><br>
+<!-- Add Product Modal -->
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+           
+    <h1>Add Product</h1>
     <form action="" method="post" enctype="multipart/form-data">
+        <!-- Form fields for adding a product -->
         <div class="form-group">
             <label for="name">Product Name:</label>
             <input type="text" name="name" id="name" class="form-control" required>
@@ -20,9 +30,11 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
         </div>
         <div class="form-group">
             <label for="category">Category:</label>
-            <select name="category" id="category" class="form-control" required>
+            <select name="category" id="category" class="form-control d-flex" required>
                 <?php foreach ($categories as $category): ?>
+
                     <option value="<?php echo $category['id']; ?>"><?php echo $category['name']; ?></option>
+                    <button class="btn btn-primary">Add Category</button>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -38,10 +50,24 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
         <span style="color: red;"><?php echo $error; ?></span>
         <span style="color: green;"><?php echo $success_message; ?></span>
     </form>
+
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- update_product_view -->
-<div class="container mt-5">
+<!-- Edit Product Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+               <!-- update_product_view -->
+
     <h1>update Product</h1><br>
 <form action="" method="post" enctype="multipart/form-data">
 <div class="mb-3">
@@ -68,16 +94,21 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
                 <?php endforeach; ?>
             </select>
         </div>
-    <button type="submit" class="btn btn-primary">Update Product</button>
+    <button type="submit" class="btn btn-primary mt-2">Update Product</button>
+    <span style="color: red;"><?php echo $error; ?></span>
+        <span style="color: green;"><?php echo $success_message; ?></span>
 </form>
+
+            </div>
+        </div>
     </div>
-    <?php endif; ?>
-
-
-
+</div>
 
 <div class="container mt-5">
     <h1>List of Products</h1><br>
+    <!-- Button to trigger Add Product Modal -->
+<button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#addProductModal">Add Product</button>
+
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <?php foreach ($products as $product): ?>
             <div class="col">
@@ -88,11 +119,12 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
                         <p class="card-text"><?php echo $product['description']; ?></p>
                         <p class="card-text">Price: <?php echo $product['price']; ?> <span>EG</span></p>
                         <div class="mt-auto">
-                        <button class="edit-product-button btn btn-primary" data-product-id="<?php echo $product['id']; ?>">ُEdit</button>
+                       <!-- Button to trigger Edit Product Modal -->
+<button type="button" class="btn btn-primary m-2 edit-product-button" data-bs-toggle="modal" data-product-id="<?php echo $product['id']; ?>" data-bs-target="#editProductModal">Edit Product</button>
                             <button class="btn btn-danger btn-delete" data-product-id="<?php echo $product['id']; ?>">Delete</button>
-                            <?php if (!$loggedUser['isAdmin']): ?>
-                            <button class="btn btn-primary " >Add To Cart</button>
-                            <?php endif; ?>
+                            <span style="color: red;"><?php echo $error; ?></span>
+                            <span style="color: green;"><?php echo $success_message; ?></span>
+
                         </div>
                     </div>
                 </div>
@@ -102,6 +134,7 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
 </div>
 <br>
 <br>
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -126,7 +159,62 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        // Function to handle add product form submission
+        $('#submitAddProduct').click(function() {
+            var formData = new FormData($('#addProductForm')[0]);
 
+            // AJAX request to submit the form data
+            $.ajax({
+                type: 'POST',
+                url: '', // Specify the URL to process the form data
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Handle success response
+                    console.log(response);
+                    // Optionally, close the modal after successful submission
+                    $('#addProductModal').modal('hide');
+                    // Reload or update the product list on the page
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        // Function to handle edit product form submission
+        $('#submitEditProduct').click(function() {
+            var formData = new FormData($('#editProductForm')[0]);
+            
+            // AJAX request to submit the form data
+            $.ajax({
+                type: 'POST',
+                url: '', // Specify the URL to process the form data
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    // Handle success response
+                    console.log(response);
+                    // Optionally, close the modal after successful submission
+                    $('#editProductModal').modal('hide');
+                    // Reload or update the product list on the page
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error response
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+
+</script>
 <script>
     $(document).ready(function() {
         // Delete button click handler
@@ -164,15 +252,18 @@ $price = isset($_POST["price"]) ? $_POST["price"] : '';
 
    
 <script>
-    var editButtons = document.querySelectorAll('.edit-product-button');
+    $(document).ready(function() {
+            
+            $('.edit-product-button').click(function() {
+                // Get the product ID from the data-product-id attribute
+                var productId = $(this).data('product-id');
+                
+                console.log('Product ID:', productId);
 
-    editButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-        
-            var productId = button.getAttribute('data-product-id');
-        
-            window.location.href = '?view=admin-products&product_id=' + productId;
+                // Show the Edit Product modal
+                $('#editProductModal').modal('show');
+            });
         });
-    });
+  
 </script>
 
