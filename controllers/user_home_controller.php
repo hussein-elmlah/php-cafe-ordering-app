@@ -8,7 +8,7 @@ if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = array();
 }
 
-class AdminHomeController
+class UserHomeController
 {
     public function getProducts()
     {
@@ -29,36 +29,10 @@ class AdminHomeController
         return $products;
     }
 
-    public function getUsers()
+    public function showHome($products)
     {
-        $User = new User();
-        $User->createUsersTable();
-
-        $db = Database::getInstance();
-        $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-        $base_query = "SELECT * FROM users";
-
-        $params = [
-            'page' => isset($_GET['page']) ? $_GET['page'] : 1,
-            'limit' => isset($_GET['limit']) ? $_GET['limit'] : 10,
-            'order' => isset($_GET['order']) ? $_GET['order'] : null,
-            'search' => isset($_GET['search']) ? $_GET['search'] : null,
-        ];
-
-        $result = $db->paramsQuery($base_query, $params, null);
-        $users = $result['data'];
-        return $users;
+        include 'views/user/user_home_view.php';
     }
-
-    public function showHome($products, $users)
-    {
-        include 'views/admin/admin_home_view.php';
-    }
-}
-
-if (isset($_POST['user_selected'])) {
-    $_SESSION['user_selected_id'] = $_POST['user_selected'];
 }
 
 if (isset($_GET['product'])) {
@@ -115,8 +89,7 @@ if (isset($_POST['order_cart'])) {
     header("Location: orders.php?$queryString");
 }
 
-$adminHomeController = new AdminHomeController();
-$products = $adminHomeController->getProducts();
-$users = $adminHomeController->getUsers();
+$userHomeController = new UserHomeController();
+$products = $userHomeController->getProducts();
 
-$adminHomeController->showHome($products, $users);
+$userHomeController->showHome($products);
