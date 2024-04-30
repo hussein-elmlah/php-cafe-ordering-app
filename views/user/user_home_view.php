@@ -2,13 +2,7 @@
 
 <head>
     <style>
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6,
-        p {
+        h1,h2,h3,h4,h5,h6,p {
             margin: 0;
             padding: 0;
         }
@@ -53,14 +47,17 @@
                 <hr class="my-4">
                 <h2>
                     <?php
-                    $totalPrice = 0;
-                    $total_amount = 0; 
+                    $total_price = 0;
+                    $total_amount = 0;
                     foreach ($_SESSION['cart'] as $product) {
-                        $totalPrice += $product['price'] * $product['quantity'];
+                        $total_price += $product['price'] * $product['quantity'];
                         $total_amount +=  $product['quantity'];
                     }
 
-                    echo $totalPrice . " EGP";
+                    $_SESSION['total_price'] = $total_price;
+                    $_SESSION['total_amount'] = $total_amount;
+
+                    echo $total_price . " EGP";
                     ?>
                 </h2>
                 <button name="order_cart" class="btn btn-primary my-4">Confirm</button>
@@ -72,7 +69,7 @@
                     <form method="post" class="d-flex flex-wrap gap-3">
                         <?php foreach ($products as $product) : ?>
                             <div class="card" style="width: 18rem; cursor: pointer;">
-                                <img src="public/images/drink.jpg" class="card-img-top" alt="Drink">
+                                <img src="<?php echo $product['image']; ?>" class="card-img-top" alt="Drink">
                                 <div class="card-body text-center">
                                     <h5 class="card-title"><?php echo $product['name']; ?></h5>
                                     <p class="card-text"><?php echo $product['price'] . ' EGP'; ?></p>

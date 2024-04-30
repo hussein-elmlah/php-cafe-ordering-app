@@ -29,7 +29,7 @@ require_once "utilities/redirectToView.php";
         <label class="fs-5 mt-3" for="notes">Notes</label>
         <textarea id="notes" name="notes" rows="4" cols="50" style="resize: none;"></textarea>
     </div>
-    
+
     <span class="d-flex gap-3 mt-4">
         <label class="fs-5" for="room">Room</label>
         <select class="form-control w-50" name="room">
@@ -39,17 +39,22 @@ require_once "utilities/redirectToView.php";
             <option value="Office">Office</option>
         </select>
     </span>
-    
+
     <hr class="my-4">
-    
+
     <h2>
         <?php
-        $totalPrice = 0;
+        $total_price = 0;
+        $total_amount = 0;
         foreach ($_SESSION['cart'] as $product) {
-            $totalPrice += $product['price'] * $product['quantity'];
+            $total_price += $product['price'] * $product['quantity'];
+            $total_amount +=  $product['quantity'];
         }
-    
-        echo $totalPrice . " EGP";
+
+        $_SESSION['total_price'] = $total_price;
+        $_SESSION['total_amount'] = $total_amount;
+
+        echo $total_price . " EGP";
         ?>
     </h2>
 
