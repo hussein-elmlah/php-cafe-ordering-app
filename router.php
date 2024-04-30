@@ -56,7 +56,18 @@ switch ($requestView) {
         // if (!$loggedUser['isAdmin']){ break; }; // admin guard
         include 'controllers/admin_products_controller.php';
         break;
-
+        case 'admin-orders':
+            // if (!$loggedUser['isAdmin']){ break; }; // admin guard
+            include 'controllers/admin_orders_controller.php';
+            break;
+            case 'admin-checks':
+                // if (!$loggedUser['isAdmin']){ break; }; // admin guard
+                include 'controllers/admin_checks_controller.php';
+                break;
+        case 'user-orders':
+            // if (!$loggedUser['isAdmin']){ break; }; // admin guard
+            include 'controllers/user_orders_controller.php';
+            break;
     default:
         include 'views/404.php';
         break;

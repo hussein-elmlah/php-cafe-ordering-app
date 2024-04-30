@@ -25,14 +25,17 @@ class Product {
 
             $this->db->customQuery($query);
              // Temporary placeholder values
-             $isLoggedIn = true;
+             $isLoggedIn = @$_SESSION['is_auth'];
              $loggedUser = array(
-                 'isAdmin' => false,
-                 'first_name' => 'Hussein'
+                 'isAdmin' => @$_SESSION['is_admin'],
+                 'first_name' => @$_SESSION['user_name']
              );
-         if ($isLoggedIn && $loggedUser['isAdmin']) {
-             echo "Products table created successfully.";
-         }
+         
+             if ($isLoggedIn && $loggedUser['isAdmin']) {
+                 echo "Products table created successfully.";
+                 
+             }
+         
         } catch (PDOException $e) {
             // Log the error or provide meaningful feedback to the user
             echo "Error creating Products table: " . $e->getMessage();

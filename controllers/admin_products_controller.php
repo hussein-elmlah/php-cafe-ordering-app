@@ -5,7 +5,7 @@ require_once 'models/ProductModel.php';
 include 'includes/pagination.php';
 require_once 'utilities/uploadImage.php';
 
-// Initialize variables to hold form data and error messages
+// Initialize variables 
 $name = $error = '';
 $success_message = '';
 
@@ -36,13 +36,13 @@ class ProductController {
     // Method to fetch all categories
     public function getAllCategories() {
         try {
-            $sql = "SELECT * FROM categories"; // Assuming you have a table named 'categories'
+            $sql = "SELECT * FROM categories"; 
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
             return $categories;
         } catch (PDOException $e) {
-            return []; // Return empty array on failure
+            return []; 
         }
     }
 
@@ -61,7 +61,7 @@ public function addProduct($name, $image, $description, $price, $category_id) {
             return false;
         }
 
-        // Insert the new product
+       
         $sql = "INSERT INTO products (name, image, description, price, category_id) VALUES (:name, :image, :description, :price, :category_id)";
         $stmt =  $this->db->prepare($sql);
         $stmt->bindParam(':name', $name);
@@ -70,20 +70,108 @@ public function addProduct($name, $image, $description, $price, $category_id) {
         $stmt->bindParam(':price', $price);
         $stmt->bindParam(':category_id', $category_id);
         $result = $stmt->execute();
-        return $result; // Return true on success, false on failure
+        return $result; 
     } catch (PDOException $e) {
-        return false; // Return false on failure
+        return false; 
     }
 }
 
+// Method to update a product
+public function updateProduct($id, $name, $price, $image , $category_id) {
+    try {
+        $image_path = '';
+
+        if (!empty($image['tmp_name'])) {
+            $imageUploadResult = handleImageUpload($image);
+            if (isset($imageUploadResult['error'])) {
+                return false;
+            }
+            $image_path = $imageUploadResult['image'];
+        }
+
+        
+        $sql = "UPDATE products SET name = :name, price = :price,  image = :image, category_id = :category WHERE id = :id";
+      
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':price', $price);
+        $stmt->bindParam(':image', $image);
+        $stmt->bindParam(':category', $category_id);
+        
+        if (!empty($image_path)) {
+            $stmt->bindParam(':image', $image_path);
+        }
+
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        
+        return true; 
+    } catch (PDOException $e) {
+        return false; 
+    }
+}
+// Method to delete a product
+public function deleteProduct($id) {
+    try {
+        $table="products";
+        return $this->db->delete('products',$id);
+      
+    } catch (PDOException $e) {
+        
+        return false;
+    }
+}
 }
 
-// Create an instance of the ProductController class
+
 $productController = new ProductController();
+
+// Handle form submission for updating product
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["product_id"])) {
+    $id = $_POST["product_id"];
+
+    // Check if all required form fields are set
+    if (isset($_POST["product_name"], $_POST["product_price"])) {
+        $name = $_POST["product_name"];
+        $price = $_POST["product_price"];
+        $category_id = $_POST["category"];
+
+        // Check if an image was uploaded
+        $image_path = '';
+        if (isset($_FILES["image"])) {
+            
+            $imageUploadResult = handleImageUpload($_FILES["image"]);
+            // var_dump($imageUploadResult);
+            // var_dump($image_path);
+            if (isset($imageUploadResult['error'])) {
+               
+                $error = $imageUploadResult['error'];
+            } else {
+               
+                $image_path = $imageUploadResult['image'];
+            }
+        }
+
+        if (empty($error)) {
+
+            $updateResult = $productController->updateProduct($id, $name, $price, $image_path, $category_id);
+
+            if ($updateResult) {
+               
+                $success_message = "Product updated successfully.";
+            } else {
+                
+                $error = "Error updating product.";
+            }
+        }
+    } else {
+        $error = "Required form fields are missing.";
+    }
+}
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if all required form fields are set
+    
     if (isset($_POST["name"], $_POST["description"], $_POST["price"], $_POST["category"], $_FILES["image"])) {
         $name = $_POST["name"];
         $description = $_POST["description"];
@@ -91,32 +179,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $category_id = $_POST["category"];
 
         // Handle image upload
-        $image_path = ''; // Initialize image path
+        $image_path = ''; 
         $imageUploadResult = uploadImage($_FILES, []);
         if (isset($imageUploadResult['data']['image'])) {
             $image_path = $imageUploadResult['data']['image']; // Get uploaded image path
         } else {
-            // Image upload failed
+            
             echo json_encode(array('status' => 'error', 'message' => $imageUploadResult['errors']['image']));
-            exit; // Stop further execution
+            exit;
         }
 
         // Add product to the database
         $result = $productController->addProduct($name, $image_path, $description, $price, $category_id);
         if ($result) {
-            // Product added successfully
+           
             $success_message = 'Product added successfully.';
         } else {
-            // Product with the same name already exists
+            
             $error = 'A product with the same name already exists.';
         }
 
     } else {
-        // Required form fields are missing
+       
         $error = 'Required form fields are missing.';
     }
 }
+// Handle delete product
+if(isset($_POST['id'])) {
+    $productId = $_POST['id'];
 
+    
+    $productController = new ProductController();
+
+    // Call the deleteProduct method to delete the product
+    $deleteResult = $productController->deleteProduct($productId);
+
+    if($deleteResult) {
+       
+        $success_message ='Product deleted successfully';
+    } else {
+        
+        $error ='Failed to delete product';
+    }
+} else {
+   
+    $error = 'Product ID is missing';
+}
 // Fetch categories data
 $categories = $productController->getAllCategories();
 
@@ -136,11 +244,12 @@ $total_pages = isset($result['total_pages']) ? $result['total_pages'] : 1;
         'isAdmin' => @$_SESSION['is_admin'],
         'first_name' => @$_SESSION['user_name']
     );
-
     if ($isLoggedIn && $loggedUser['isAdmin']) {
-        echo "Products table created successfully.";
-    }
-// Include the view file
-include 'views/admin/add_product.php';
+        include 'views/admin/add_product.php';
 Pagination($current_page, $total_pages);
+    }
+    
+
+
+
 ?>
