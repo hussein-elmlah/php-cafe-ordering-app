@@ -81,7 +81,6 @@ class AdminOrdersController
     }
     function cancel_order()
     {
-        session_start();
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         $order_id = isset($_GET['order_id']) ? $_GET['order_id'] : null;

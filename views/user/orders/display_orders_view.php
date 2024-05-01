@@ -10,7 +10,7 @@
         </div>
     </div>
     <div style="margin-left:90%;">
-        <a id="checkLink" href="#" class="btn w-100 fw-bolder fs-5 " p-5 style="background-color:#34bc1c; color:white; left:100%">GO</a>
+        <a id="checkLink" href="?view=home" class="btn w-100 fw-bolder fs-5 " p-5 style="background-color:#34bc1c; color:white; left:100%">GO</a>
     </div>
     <div class="container">
         <?php  if(!isset($orders)):?>
@@ -29,7 +29,7 @@
                     <h2 class="card-title">Amount : <span class="fs-5"><?php echo $order['total_price']; ?> EGP</span></h2>
                 </div>
                 <?php if ($order['status'] == "Processing") : ?>
-                    <a class=" card-price btn w-25 fs-5 text-center mb-0 " href='user-orders&action=delete&order_id=<?php echo $order["id"]; ?>' style="text-decoration:none; margin-top:15px;background-color:#970C0A;color: #fff;">Cancel</a>
+                    <a class=" card-price btn w-25 fs-5 text-center mb-0 " href='?view=user-orders&action=delete&order_id=<?php echo $order["id"]; ?>' style="text-decoration:none; margin-top:15px;background-color:#970C0A;color: #fff;">Cancel</a>
                     <!--  <div class="card-price"><?php echo $order['total_price'] ?> EGP</div> -->
                 <?php endif; ?>
 

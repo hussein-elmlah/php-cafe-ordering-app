@@ -21,11 +21,15 @@ class AdminUserController
         $isImage = DataValidation::image();
 
         try {
-            DataValidation::stringType()->length(8, null)->check($_POST['password']);
+
+            DataValidation::stringType()->length(8, null)->check($_POST['user_password']);
             DataValidation::stringType()->length(8, null)->check($_POST['password_confirmation']);
-            DataValidation::keyValue('password_confirmation', 'equals', 'password')->check($_POST);
+            DataValidation::keyValue('password_confirmation', 'equals', 'user_password')->check($_POST);
             $isEmail->check($_POST['email']);
             $isImage->check($profile);
+
+            $hashed_password = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+            $_POST['password'] = $hashed_password;
 
             $_POST['profile'] = file_get_contents($profile);
             $this->db->insert_with_data(
@@ -35,12 +39,18 @@ class AdminUserController
                 $_POST
             );
             $_SESSION['msg'] = "User is added successfully";
-        } catch (ValidationException $exception) {
-            $_SESSION['error'] = $exception->getMessage();
-        }
-        echo '<script> 
+            echo '<script> 
                 window.location.href = window.location.pathname + "?view=admin-users";
               </script>';
+
+        } catch (ValidationException $exception) {
+            $_SESSION['error'] = $exception->getMessage();
+            $_SESSION['old_data'] = $_POST;
+            echo '<script> 
+                window.location.href = window.location.pathname + "?view=admin-users&action=add";
+              </script>';
+        }
+        
     }
 
     public function viewAddAdminUser()

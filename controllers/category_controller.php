@@ -1,9 +1,4 @@
 <?php
-// require_once 'config/db_info.php';
-// require_once 'models/CategoryModel.php';
-// require_once 'db/db_class.php';
-// require_once 'utilities/uploadImage.php';
-// include 'includes/pagination.php';
 
 class CategoryController {
     private $db;

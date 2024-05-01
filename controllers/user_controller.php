@@ -1,6 +1,7 @@
 <?php
 
 require_once 'vendor/autoload.php';
+
 use Respect\Validation\Validator as DataValidation;
 use Respect\Validation\Exceptions\ValidationException;
 
@@ -21,9 +22,9 @@ class UserController
             'password' => $password,
         ] = $_POST;
 
-        $loggedInUserData = $this->db->customQuery("SELECT * FROM users WHERE email='$email' AND password='$password' LIMIT 1");
-
-        if (count($loggedInUserData) > 0) {
+        $loggedInUserData = $this->db->customQuery("SELECT * FROM users WHERE email='$email' LIMIT 1");
+        
+        if (count($loggedInUserData) > 0 && password_verify($password, $loggedInUserData[0]['password'])) {
             $_SESSION['is_auth'] = true;
             $_SESSION['is_admin'] = $loggedInUserData[0]['is_admin'];
             $_SESSION['user_name'] = $loggedInUserData[0]['name'];
@@ -46,6 +47,7 @@ class UserController
             window.location.href = window.location.pathname + "?view=login";
             </script>';
         }
+
     }
 
     public function viewLoginForm()
@@ -68,11 +70,14 @@ class UserController
         $isImage = DataValidation::image();
 
         try {
-            DataValidation::stringType()->length(8, null)->check($_POST['password']);
+            DataValidation::stringType()->length(8, null)->check($_POST['user_password']);
             DataValidation::stringType()->length(8, null)->check($_POST['password_confirmation']);
-            DataValidation::keyValue('password_confirmation', 'equals', 'password')->check($_POST);
+            DataValidation::keyValue('password_confirmation', 'equals', 'user_password')->check($_POST);
             $isEmail->check($_POST['email']);
             $isImage->check($profile);
+
+            $hashed_password = password_hash($_POST['user_password'], PASSWORD_DEFAULT);
+            $_POST['password'] = $hashed_password;
 
             $_POST['profile'] = file_get_contents($profile);
             $this->db->insert_with_data(
@@ -81,20 +86,18 @@ class UserController
                 ":name,:email,:password,:room,:ext,:profile",
                 $_POST
             );
-            $_SESSION['msg'] = "Your account is saved successfully";
-             echo '<script> 
+            $_SESSION['msg'] = "";
+            echo '<script> 
                 window.location.href = window.location.pathname;
               </script>';
         } catch (ValidationException $exception) {
             $_SESSION['error'] = $exception->getMessage();
-             echo '<script> 
+            $_SESSION['old_data'] = $_POST;
+            echo '<script> 
                 window.location.href = window.location.pathname + "?view=register&action=register";
               </script>';
         }
-
-       
     }
-
 }
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -108,7 +111,7 @@ switch ($action) {
     case 'validate':
         $user->loginUser();
         break;
-    
+
     case 'register':
         $user->viewRegisterForm();
         break;

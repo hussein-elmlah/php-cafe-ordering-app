@@ -1,26 +1,41 @@
 <div class="admin-panel__content">
 
     <div class="row">
+
+    <?php if (isset($_SESSION['error'])) {
+        echo '<div class="alert alert-danger" role="alert" id="error_message">' .
+            $_SESSION['error']
+            . '</div>';
+        }
+
+        echo '<script> 
+            setTimeout(() => {
+                document.getElementById("error_message").style.display = "none";
+            }, 2000);
+            </script>';
+        unset($_SESSION['error']);
+    ?>
+        <u class="form-label">Note: Don't upload images larger than 300 KB </u>
         <form class="row g-3" action="?view=admin-users&action=create" method="post" enctype="multipart/form-data">
             <div class="col-md-4">
                 <label for="inputAddress" class="form-label">Name</label>
-                <input type="text" class="form-control" name="name" id="inputAddress">
+                <input type="text" class="form-control" value="<?= @$_SESSION['old_data']['name'] ?>" name="name" id="inputAddress">
             </div>
             <div class="col-md-8">
                 <label for="inputEmail4" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" id="inputEmail4">
+                <input type="email" class="form-control" value="<?= @$_SESSION['old_data']['email'] ?>" name="email" id="inputEmail4">
             </div>
             <div class="col-md-6">
                 <label for="inputEmail4" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" id="inputEmail4">
+                <input type="password" class="form-control" value="<?= @$_SESSION['old_data']['user_password'] ?>"  name="user_password" id="inputEmail4">
             </div>
             <div class="col-md-6">
                 <label for="inputPassword4" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" name="password_confirmation" id="inputPassword4">
+                <input type="password" class="form-control" value="<?= @$_SESSION['old_data']['password_confirmation'] ?>" name="password_confirmation" id="inputPassword4">
             </div>
             <div class="col-md-4">
                 <label for="inputCity" class="form-label">Ext</label>
-                <input type="text" class="form-control" name="ext" id="inputCity">
+                <input type="text" class="form-control" value="<?= @$_SESSION['old_data']['ext'] ?>" name="ext" id="inputCity">
             </div>
             <div class="col-md-4">
                 <label for="inputState" class="form-label">Room</label>
@@ -28,7 +43,7 @@
                 <select id="inputState" name="room" class="form-select">
                     <?php if ($rooms) {
                         foreach ($rooms as $room) {  ?>
-                            <option value="<?= $room['name'] ?>"><?= $room['name'] ?></option>
+                            <option <?= (@$_SESSION['old_data']['room'] == $room['name']) ? 'selected' : '' ?> value="<?= $room['name'] ?>"><?= $room['name'] ?></option>
                         <?php  }
                     } else {  ?>
                         <option>...NO ROOMS...</option>

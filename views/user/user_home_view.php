@@ -10,6 +10,25 @@
 </head>
 <div class="container-fluid p-0">
     <div class="row">
+         
+    <?php if (isset($_SESSION['msg'])) {
+            echo '<div class="alert alert-success" role="alert" id="success_message">' .
+                $_SESSION['msg']
+                . '</div>';
+                
+            if (isset($_SESSION['old_data'])) {
+                unset($_SESSION['old_data']);
+            }
+        }
+
+        echo '<script>
+            setTimeout(() => {
+                document.getElementById("success_message").style.display = "none";
+            }, 2000);
+            </script>';
+        unset($_SESSION['msg']);
+    ?>
+    
         <div class="col-5">
             <h3 class="mt-4">Cart</h3>
             <form method="post" action="?view=home">
@@ -73,7 +92,7 @@
                                 <div class="card-body text-center">
                                     <h5 class="card-title"><?php echo $product['name']; ?></h5>
                                     <p class="card-text"><?php echo $product['price'] . ' EGP'; ?></p>
-                                    <a href="home&product=<?php echo $product['id']; ?>" class="btn btn-primary mt-2">Add to cart</a>
+                                    <a href="?view=home&product=<?php echo $product['id']; ?>" class="btn btn-primary mt-2">Add to cart</a>
                                 </div>
                             </div>
                         <?php endforeach; ?>

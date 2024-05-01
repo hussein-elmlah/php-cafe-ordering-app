@@ -1,26 +1,20 @@
 <?php
 
-// require_once "utilities/redirectToView.php";
-
 $requestView = $_GET['view'] ?? '';
 $isLoggedIn = @$_SESSION['is_auth'];
-// $loggedUser = array(
-//     'isAdmin' => @$_SESSION['is_admin'],
-//     'first_name' => @$_SESSION['user_name']
-// );
-// echo $_SESSION['email'];
+
+$loggedUser = array(
+    'isAdmin' => @$_SESSION['is_admin'],
+    'first_name' => @$_SESSION['user_name']
+);
 
 switch ($requestView) {
-    // case "":
+    case "":
     case "home":
         if ($isLoggedIn) {
             include 'controllers/user_home_controller.php';
             break;
         }
-    // case 'null':
-    //     // Include admin-home controller here
-    //     redirectToView('admin-users'); // delete later
-    //     break;
     case 'register':
         include 'controllers/user_controller.php';
         break;
@@ -39,7 +33,7 @@ switch ($requestView) {
         break;
 
     case 'admin-users':
-        if (!$isAdmin) {
+        if (!$loggedUser['isAdmin']) {
             $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
             $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
             echo "<script>window.location.href = '$url';</script>";
@@ -56,26 +50,55 @@ switch ($requestView) {
         break;
 
     case 'admin-categories':
-        // if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        include 'controllers/category_controller.php';
+        if (!$loggedUser['isAdmin']) {
+            $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+            $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
+            echo "<script>window.location.href = '$url';</script>";
+        } else {
+            include 'controllers/category_controller.php';
+        }
         break;
 
     case 'admin-products':
-        // if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        include 'controllers/admin_products_controller.php';
+        if (!$loggedUser['isAdmin']) {
+            $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+            $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
+            echo "<script>window.location.href = '$url';</script>";
+        } else {
+            include 'controllers/admin_products_controller.php';
+        }
         break;
+
     case 'admin-orders':
-        // if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        include 'controllers/admin_orders_controller.php';
+        if (!$loggedUser['isAdmin']) {
+            $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+            $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
+            echo "<script>window.location.href = '$url';</script>";
+        } else {
+            include 'controllers/admin_orders_controller.php';
+        }
         break;
+
     case 'admin-checks':
-        // if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        include 'controllers/admin_checks_controller.php';
+        if (!$loggedUser['isAdmin']) {
+            $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+            $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
+            echo "<script>window.location.href = '$url';</script>";
+        } else {
+            include 'controllers/admin_checks_controller.php';
+        }
         break;
+
     case 'user-orders':
-        // if (!$loggedUser['isAdmin']){ break; }; // admin guard
-        include 'controllers/user_orders_controller.php';
+        if (!$loggedUser['first_name']) {
+            $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+            $url = "http://$_SERVER[HTTP_HOST]$baseHref/";
+            echo "<script>window.location.href = '$url';</script>";
+        } else {
+            include 'controllers/user_orders_controller.php';
+        }
         break;
+        
     default:
         include 'views/404.php';
         break;

@@ -8,7 +8,7 @@ $userName = @$_SESSION['user_name'];
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid px-4 fs-5">
-        <a class="navbar-brand" href="?view=#">
+        <a class="navbar-brand" href="?view=home">
             <i class="fas fa-coffee"></i>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,9 +52,6 @@ $userName = @$_SESSION['user_name'];
                             <?= $userName ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
                             <li><a class="dropdown-item" href="?view=logout" onclick="handleLogout()">Logout</a></li>
                         </ul>
                     </div>
