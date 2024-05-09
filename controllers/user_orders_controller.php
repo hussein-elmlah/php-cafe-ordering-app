@@ -13,8 +13,8 @@ class UserOrdersController
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-        $total_amount = isset($_GET['total_amount']) ? $_GET['total_amount'] : null;
-        $total_price = isset($_GET['total_price']) ? $_GET['total_price'] : null;
+        $total_amount = isset($_SESSION['total_amount']) ? $_SESSION['total_amount'] : null;
+        $total_price = isset($_SESSION['total_price']) ? $_SESSION['total_price'] : null;
 
         $room = isset($_GET['room']) ? $_GET['room'] : '';
         $notes = isset($_GET['notes']) ? $_GET['notes'] : ' ';
@@ -51,6 +51,9 @@ class UserOrdersController
             } else {
                 // header("Location: ?view=user-orders&action=add&notes=$notes&room=$room");
                 // echo '<script> location.reload(); </script>';
+                $baseHref = rtrim(dirname($_SERVER['PHP_SELF']), '/');
+                $url = "http://$_SERVER[HTTP_HOST]$baseHref/?view=user-orders";
+                echo "<script>window.location.href = '$url';</script>";
                 include './views/user/orders/display_orders_view.php';
             }
         } else {
@@ -135,8 +138,8 @@ class UserOrdersController
     {
         $db = Database::getInstance();
         $db->connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-        if (isset($_GET['user_email'])) {
-            $user_email = $_GET['user_email'];
+        if (isset($_SESSION['email'])) {
+            $user_email = $_SESSION['email'];
             if (isset($_GET['date_to']) && isset($_GET['date_from'])) {
                 $date_to = $_GET['date_to'];
                 $date_from = $_GET['date_from'];
@@ -170,8 +173,6 @@ class UserOrdersController
             'order' => isset($_GET['order']) ? $_GET['order'] : null,
             'search' => isset($_GET['search']) ? $_GET['search'] : null,
         ];
-
-        // var_dump( $params);
 
         $search_fields = ['user_email'];
 
